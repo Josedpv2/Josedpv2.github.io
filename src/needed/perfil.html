@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+	   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<meta charset="UTF-8">
+		<link rel="icon" href="http://www.ciens.ucv.ve/portalasig2/favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" href="../css/style.css"  type="text/css">
+		<link rel="stylesheet" href="perfil.css"  type="text/css">
+		<title> Jose Daniel </title>
+        <script type="text/javascript" src="csvjson.json"></script>
+        <script type="text/javascript" src="perfil.json"></script>
+        <script type="text/javascript" src="config.json"></script>
+        
+        <script type="text/javascript">
+            function llenar(){
+				
+				document.title = perfil.nombre;
+				document.getElementById("footer").innerHTML = config.copyRight;
+				
+				document.getElementById("logo").innerHTML = config.sitio[0] + "<span>" + config.sitio[1] +  "</span> " + config.sitio[2];
+				
+				document.getElementById("saludo").innerHTML = config.saludo + ", Jose Perez";
+				document.getElementById("busqueda").innerHTML = "<a href='../index.html'>" + config.home + "</a>";
+				
+				document.getElementById("nombre").innerHTML = perfil.nombre ;
+				var regex=/,/gi;
+				var fecha= info[3].__3.replace(regex, '') ;
+				var $='$';
+				regex = $ ;
+				fecha= fecha.replace(regex, '') ;
+				document.getElementById("descripcion").innerHTML = fecha/2;
+				
+				document.getElementById("imagen").src = perfil.imagen;
+				
+				document.getElementById("color_fav").innerHTML = config.color;
+				document.getElementById("color").innerHTML = perfil.color;
+				document.getElementById("libro_fav").innerHTML = config.libro;
+				document.getElementById("libro").innerHTML = perfil.libro;
+				document.getElementById("musica_fav").innerHTML = config.musica;
+				document.getElementById("musica").innerHTML = perfil.musica;
+				document.getElementById("video_juego_fav").innerHTML = config.video_juego;
+				document.getElementById("video_juego").innerHTML = perfil.video_juego.toString();
+
+				document.getElementById("lenguajes_fav").innerHTML = config.lenguajes;
+				document.getElementById("lenguajes").innerHTML = perfil.lenguajes.toString();
+
+				var correoEnlace = "<a href=\"[email]\">[email]</a>".replace("[email]", perfil.email).replace("[email]", perfil.email);
+
+				document.getElementById("correo").innerHTML = config.email.replace("[email]", correoEnlace);	
+			}
+		</script>
+	</head>
+	<body onload="llenar()">
+	    <header>
+			<nav>
+				<ul>
+					<li class="logo" id="logo"></li>
+					<li class="saludo" id="saludo"> </li>
+					<li class="busqueda" id="busqueda"></li>
+				</ul>	
+			</nav> 
+	    </header>
+	    <section>
+	       
+			
+<table class="css_table1" id="perfil">
+  <tr>
+    <td id="foto"><img  class="css_img" id="imagen" src="" alt="BT"></td>
+    <table  class="css_td1">
+		<h1 class="css_h1"  id="nombre" ></h1>
+		<p class="css_p1"><i id="descripcion"></i>
+        </p>
+		
+        <tr><td id="color_fav"></td><td id="color"></td></tr>
+        <tr><td id="libro_fav"></td><td id="libro"></td></tr>
+        <tr><td id="musica_fav"></td><td id="musica"></td></tr>
+        <tr><td id="video_juego_fav"></td><td id="video_juego"></td></tr>
+        <tr><td ><span class="negrita" id="lenguajes_fav"></span></td><td><span class="negrita" id="lenguajes"></span></td></tr>
+        <tr><td id="correo"></td></tr>
+            </table>
+  </tr>
+</table>
+			 
+	    </section>
+	    <footer id="footer">
+	        
+	    </footer>
+	</body>
+</html>

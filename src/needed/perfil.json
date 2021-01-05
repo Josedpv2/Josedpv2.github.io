@@ -1,0 +1,14 @@
+let perfil = {	
+	"nombre":"Jose Perez",
+	"descripcion":"Estudiante de Computación de la Facultad de Ciencias de la Universidad Central de Venezuela, experiencia en Front-end, participación en varios proyectos desarrollados para la Facultad de Ciencias y actualmente trabajando para una empresa llamada Ozone Technologies desarrollando implementaciones en el área de Gráfica con la libreria Three.js.",
+	"color":"Azul",
+	"libro":"The Maze Runner: The Death Cure",
+	"musica":["Kpop","y R&B"],
+	"video_juego": [" Super Smash Bros: Ultimate","Just Dance 2020"],
+	"lenguajes":["java", "C", "C++", "SQL","JavaScript","Python"],
+	"email":"mobilefl44@gmail.com",
+	"ci":"22021629",
+	"genero": "masculino",
+	"fecha_nacimiento":"26/04/1994",
+    "imagen": "22021629.jpg"
+}
