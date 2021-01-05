@@ -622,7 +622,7 @@ function exchange_sphere(where_to_start, register_number){
 						}
 					//	alert(sphere_size);
 						info[index][0]=info[index][0]+'-------------------------';
-						alert(info[index][0]);
+						//alert(info[index][0]);
 						//timestamp=sphere_size;
 						createwrittensphere(indexx, info[index][0], sphere_size, index, 0, counter*1.5);
 					//contamos la cantidad de fechas que hay
