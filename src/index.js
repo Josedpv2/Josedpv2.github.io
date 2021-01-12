@@ -142,7 +142,7 @@ function addLights()
     spotLight.position.set( obj.posX, obj.posY, obj.posZ );
 	scene.add( spotLight );
 	spotLightHelper = new THREE.SpotLightHelper( spotLight );
-	scene.add( spotLightHelper );
+	//scene.add( spotLightHelper );
 	//fireworklight
 	var light = new THREE.PointLight(0xffffff);
 	light.position.set(0,250,0);
@@ -210,9 +210,9 @@ function main() {
 //	renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
 	
 	//Camera
-	camera.position.x = 14;
-	camera.position.y = 2;
-	camera.position.z = 6;
+	camera.position.x = 1000;
+	camera.position.y = 1000;
+	camera.position.z = 1000;
 	camera.lookAt( 0, 0.1, 0 );
     controls = new OrbitControls( camera, renderer.domElement );
 
@@ -461,14 +461,14 @@ function createwrittensphere(sphere_price, sphere_size){
 
 		var geom = new THREE.SphereGeometry(sphere_size, 34, 24);
 		var mat = new THREE.MeshBasicMaterial({
-		  color: Math.random() * 0xFFFFFF,
+		  color:"red",
 		  //wireframe: true
 		});
 		var planet = new THREE.Mesh(geom, mat);
-		var orbit = 200;
+		var orbit = 900;
 	
-		planet.position.x = Math.cos(timestamp * sphere_size) * orbit;
-		planet.position.z = Math.sin(timestamp * sphere_size) * orbit;
+		planet.position.x = Math.cos(60*timestamp ) * orbit;
+		planet.position.z = Math.sin(60*timestamp ) * orbit;
 		planet_z=planet.position.z;
 		planet_y=sphere_size;
 		planet_x=planet.position.x;
@@ -641,7 +641,7 @@ function createwrittensphere2( sphere_price, sphere_size, orbit){
 
 		var geom = new THREE.SphereGeometry(sphere_size, 32, 24);
 		var mat = new THREE.MeshBasicMaterial({
-		  color: Math.random() * 0xFFFFFF,
+		  color:  "blue",
 		  //wireframe: true
 		});
 		var planet = new THREE.Mesh(geom, mat);
@@ -649,8 +649,8 @@ function createwrittensphere2( sphere_price, sphere_size, orbit){
 		
 		planet.position.y=-planet_y;
 		
-		planet.position.x = planet_x +(Math.cos(timestamp2 * planet_y) * orbit);
-		planet.position.z = planet_z +( Math.sin(timestamp2 * planet_y) * orbit);
+		planet.position.x = planet_x +(Math.cos(timestamp2 * 20) * orbit);
+		planet.position.z = planet_z +( Math.sin(timestamp2 * 20) * orbit);
 	timestamp2++;
 		planet.userData.orbit = orbit;
 		planet.userData.speed = sphere_size;
@@ -661,7 +661,7 @@ function createwrittensphere2( sphere_price, sphere_size, orbit){
 		var ctx = canvas.getContext("2d");
 		
 		//ctx.translate(100,0);
-		ctx.font = "44pt Arial";
+		ctx.font = "20pt Arial";
 		ctx.fillStyle = "white";
 		ctx.textAlign = "center";
 		ctx.fillText(sphere_price, 128, 44);
@@ -688,7 +688,7 @@ function raycast() {
   var intersects = raycaster.intersectObjects(planets.children );
   
 		  if ( intersects.length > 0 ) {
-			  
+
 			planets.forEach( function(planet){
     
 				var scaleFactor = 9;
@@ -745,7 +745,7 @@ function exchange_sphere(where_to_start, register_number){
 		}));
 		scene.add(orbit [0]);
 	var index = where_to_start+2;//indice
-	for (let indexx=0 ; indexx < sphere_cant_exchange[register_number]-2; indexx++) {
+	for (let indexx=0 ; indexx < sphere_cant_exchange[register_number]-3; indexx++) {
 		
 			var counter=0;
 			var first;
