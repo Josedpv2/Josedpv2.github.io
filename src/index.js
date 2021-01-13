@@ -210,9 +210,9 @@ function main() {
 //	renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
 	
 	//Camera
-	camera.position.x = 1000;
-	camera.position.y = 1000;
-	camera.position.z = 1000;
+	camera.position.x = 1100;
+	camera.position.y = 1100;
+	camera.position.z = 1100;
 	camera.lookAt( 0, 0.1, 0 );
     controls = new OrbitControls( camera, renderer.domElement );
 
@@ -449,7 +449,8 @@ function makeTextSprite( message, parameters )
 	var spriteMaterial = new THREE.SpriteMaterial( 
 		{ map: texture} );
 	var sprite = new THREE.Sprite( spriteMaterial );
-	sprite.scale.set(2,5,2);
+	//sprite.scale.set(2,5,2);
+	sprite.visible=false;
 	return sprite;	
 }
 
@@ -465,8 +466,8 @@ function createwrittensphere(sphere_price, sphere_size){
 		  //wireframe: true
 		});
 		var planet = new THREE.Mesh(geom, mat);
-		var orbit = 900;
-	
+		var orbit = 1500;
+		planet.position.y=100;
 		planet.position.x = Math.cos(60*timestamp ) * orbit;
 		planet.position.z = Math.sin(60*timestamp ) * orbit;
 		planet_z=planet.position.z;
@@ -476,6 +477,8 @@ function createwrittensphere(sphere_price, sphere_size){
 		planet.userData.orbit = orbit;
 		planet.userData.speed = sphere_size;
 	
+
+		/*
 		var canvas = document.createElement('canvas');
 		canvas.width = 256;
 		canvas.height = 256;
@@ -493,7 +496,13 @@ function createwrittensphere(sphere_price, sphere_size){
 		  map: tex
 		});
 		var sprite = new THREE.Sprite(spriteMat);
-	
+	*/
+
+
+	var sprite = makeTextSprite( sphere_price, 
+		{ fontsize: 32, fontface: "Georgia", borderColor: {r:0, g:0, b:255, a:0.8} } );
+//	spritey.position.set(55,105,55);
+	//scene.add( spritey );
 		planet.add(sprite);
 		planets.push(planet);
 		scene.add(planet);
@@ -647,7 +656,7 @@ function createwrittensphere2( sphere_price, sphere_size, orbit){
 		var planet = new THREE.Mesh(geom, mat);
 		
 		
-		planet.position.y=-planet_y;
+		//planet.position.y=-planet_y;
 		
 		planet.position.x = planet_x +(Math.cos(timestamp2 * 20) * orbit);
 		planet.position.z = planet_z +( Math.sin(timestamp2 * 20) * orbit);
@@ -672,7 +681,8 @@ function createwrittensphere2( sphere_price, sphere_size, orbit){
 		  map: tex
 		});
 		var sprite = new THREE.Sprite(spriteMat);
-	
+		sprite.visible=false;
+
 		planet.add(sprite);
 		planets.push(planet);
 		scene.add(planet);
@@ -680,27 +690,28 @@ function createwrittensphere2( sphere_price, sphere_size, orbit){
 		
 	  
 }
-
+var spriteee=0;
 function raycast() {
       
 	raycaster.setFromCamera( mouse, camera );
 	
-  var intersects = raycaster.intersectObjects(planets.children );
+  var intersects = raycaster.intersectObjects(planets );
+  var INTERSECTED;
   
 		  if ( intersects.length > 0 ) {
-
-			planets.forEach( function(planet){
-    
-				var scaleFactor = 9;
-				var sprite = planet.children[0];
-				//alert(planet.posX);
-				//sprite.position.set(sprite.posX, sprite.posY, sprite.posZ)
-				var scale = scaleVector.subVectors(planet.position, camera.position).length() / scaleFactor;
-				sprite.scale.set(scale*2, scale*2, 1);
+			INTERSECTED = intersects[ 0 ].object;
+			//alert(INTERSECTED.children[0]);
+			spriteee= INTERSECTED.children[0];
+			spriteee.visible=true;
+			//intersects.sprite.visible=true;
+			/*INTERSECTED.forEach( function(planet){
+				
+				alert(planet);
+				planet.sprite.visible=true;
 				
 				
 				
-			  });
+			  });*/
   
 			 // if ( INTERSECTED != intersects[ 0 ].object ) {
 	
@@ -710,12 +721,13 @@ function raycast() {
 			  
 	
 		  } else {
-  
+
+			
 			//INTERSECTED = intersects[ 0 ].object;
 			//INTERSECTED.spritey.visible=true;
-	
-			  INTERSECTED = null;
-	
+			if (spriteee!=0) {
+				spriteee.visible=false;
+			}
 		  }
 		  
 	
@@ -737,7 +749,7 @@ function exchange_sphere(where_to_start, register_number){
 	radii=0;
 	var shape = new THREE.Shape();
 		shape.moveTo(200, 0);
-		shape.absarc(0, 0, 200, 0, 2 * Math.PI, false);
+		shape.absarc(0, 0, 1500, 0, 2 * Math.PI, false);
 		var spacedPoints = shape.createSpacedPointsGeometry(128);
 		spacedPoints.rotateX(THREE.Math.degToRad(-90));
 		 orbit [0]= new THREE.Line(spacedPoints, new THREE.LineBasicMaterial({
@@ -762,10 +774,11 @@ function exchange_sphere(where_to_start, register_number){
 						sphere_size= sphere_size.replace(regex, '') ;
 						for(let kndex=0 ; kndex < 50; kndex++)
 						{
-							if (sphere_size>50){
+							if (sphere_size>100){
 								sphere_size=sphere_size/5;
 							}
 						}
+					//	sphere_size=sphere_size/1000000;
 					//	alert(sphere_size);
 						//info[index][0]=info[index][0]+'-------------------------';
 						//alert(info[index][0]);
@@ -778,7 +791,7 @@ function exchange_sphere(where_to_start, register_number){
 		var shape = new THREE.Shape();
 		shape.moveTo(planet_x, planet_y);
 		
-		shape.absarc(planet_x, planet_z, 200, 0, 2 * Math.PI, false);
+		shape.absarc(planet_x, planet_z, 400, 0, 2 * Math.PI, false);
 		var spacedPoints = shape.createSpacedPointsGeometry(128);
 		spacedPoints.rotateX(THREE.Math.degToRad(90));
 		 orbit [indexx]= new THREE.Line(spacedPoints, new THREE.LineBasicMaterial({
@@ -800,7 +813,7 @@ function exchange_sphere(where_to_start, register_number){
 							}
 						}
 						
-						createwrittensphere2( info[index][jndex], sphere_size, 200);
+						createwrittensphere2( info[index][jndex], sphere_size, 400);
 						
 					
 							
