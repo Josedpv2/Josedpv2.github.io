@@ -115,7 +115,7 @@ function init()
     // scene.fog = new THREE.Fog( 0x443333, 1, 4 );
  
        var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
-	var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 2, FAR = 5000;
+	var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 2, FAR = 10000;
 	camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
     
 		
@@ -210,9 +210,9 @@ function main() {
 //	renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
 	
 	//Camera
-	camera.position.x = 1100;
-	camera.position.y = 1100;
-	camera.position.z = 1100;
+	camera.position.x = 2000;
+	camera.position.y = 2000;
+	camera.position.z = 2000;
 	camera.lookAt( 0, 0.1, 0 );
     controls = new OrbitControls( camera, renderer.domElement );
 
@@ -229,11 +229,13 @@ function main() {
 	floorTexture.repeat.set( 10, 10 );
 	
 	var plane = new THREE.Mesh(
-        new THREE.PlaneBufferGeometry( 30, 30 ),
+        new THREE.PlaneBufferGeometry( 6000, 6000 ),
 		new THREE.MeshPhongMaterial( { color: 0x999999, specular: 0x101010, map: floorTexture, side: THREE.DoubleSide} )
 		);
+
     plane.rotation.x = - Math.PI / 2;
-    plane.receiveShadow = true;
+	plane.receiveShadow = true;
+	plane.position.set(0,-20,0)
 	scene.add( plane );
 
 
@@ -274,7 +276,7 @@ function addGUIChooseDate (){
 				
 					Date_number++;
 					Date_elected[index]=Date_number;
-					sphere_cant_exchange[Date_number]=0;
+					sphere_cant_exchange[Date_number]=1;
 					
 					counter++;//contamos la cantidad de fechas que hay
 
@@ -397,64 +399,30 @@ function roundRect(ctx, x, y, w, h, r)
     ctx.fill();
 	ctx.stroke();   
 }
-function makeTextSprite( message, parameters )
-{
-	if ( parameters === undefined ) parameters = {};
-	
-	var fontface = parameters.hasOwnProperty("fontface") ? 
-		parameters["fontface"] : "Arial";
-	
-	var fontsize = parameters.hasOwnProperty("fontsize") ? 
-		parameters["fontsize"] : 0.1;
-	
-	var borderThickness = parameters.hasOwnProperty("borderThickness") ? 
-		parameters["borderThickness"] : 5;
-	
-	var borderColor = parameters.hasOwnProperty("borderColor") ?
-		parameters["borderColor"] : { r:0, g:0, b:0, a:1.0 };
-	
-	var backgroundColor = parameters.hasOwnProperty("backgroundColor") ?
-		parameters["backgroundColor"] : { r:255, g:255, b:255, a:1.0 };
-
-	//var spriteAlignment = THREE.SpriteAlignment.topLeft;
-		
+function makeTextSprite( message)
+{	
 	var canvas = document.createElement('canvas');
-	var context = canvas.getContext('2d');
-	context.font = "Bold " + fontsize + "px " + fontface;
-    
-	// get size data (height depends only on font size)
-	var metrics = context.measureText( message );
-	var textWidth = metrics.width;
-	
-	// background color
-	context.fillStyle   = "rgba(" + backgroundColor.r + "," + backgroundColor.g + ","
-								  + backgroundColor.b + "," + backgroundColor.a + ")";
-	// border color
-	context.strokeStyle = "rgba(" + borderColor.r + "," + borderColor.g + ","
-								  + borderColor.b + "," + borderColor.a + ")";
+	canvas.width = 256;
+	canvas.height = 256;
+	var ctx = canvas.getContext("2d");
 
-	context.lineWidth = borderThickness;
-	roundRect(context, borderThickness/2, borderThickness/2, textWidth + borderThickness, fontsize * 1.4 + borderThickness, 6);
-	// 1.4 is extra height factor for text below baseline: g,j,p,q.
-	
-	// text color
-	context.fillStyle = "rgba(0, 0, 0, 1.0)";
-
-	context.fillText( message, borderThickness, fontsize + borderThickness);
-	
-	// canvas contents will be used for a texture
-	var texture = new THREE.Texture(canvas) 
-	texture.needsUpdate = true;
-
-	var spriteMaterial = new THREE.SpriteMaterial( 
-		{ map: texture} );
-	var sprite = new THREE.Sprite( spriteMaterial );
-	//sprite.scale.set(2,5,2);
-	sprite.visible=false;
+	//ctx.translate(100,0);
+	ctx.font = "24pt Arial";
+	ctx.fillStyle = "white";
+	ctx.textAlign = "center";
+	ctx.fillText( message, 128, 44);
+	//console.log(ctx);
+	var tex = new THREE.Texture(canvas);
+	tex.needsUpdate = true;
+	var spriteMat = new THREE.SpriteMaterial({
+	map: tex
+	});
+	var sprite = new THREE.Sprite(spriteMat);
+	sprite.visible=true;
 	return sprite;	
 }
 
-function createwrittensphere(sphere_price, sphere_size){
+function createwrittensphere(sphere_price, sphere_size,sphere_cant){
 	//Ground
 
 
@@ -462,7 +430,7 @@ function createwrittensphere(sphere_price, sphere_size){
 
 		var geom = new THREE.SphereGeometry(sphere_size, 34, 24);
 		var mat = new THREE.MeshBasicMaterial({
-		  color:"red",
+		  color:Math.random() * "0xFFFFFF",
 		  //wireframe: true
 		});
 		var planet = new THREE.Mesh(geom, mat);
@@ -499,11 +467,12 @@ function createwrittensphere(sphere_price, sphere_size){
 	*/
 
 
-	var sprite = makeTextSprite( sphere_price, 
-		{ fontsize: 32, fontface: "Georgia", borderColor: {r:0, g:0, b:255, a:0.8} } );
+	//var sprite = makeTextSprite( sphere_cant );
 //	spritey.position.set(55,105,55);
 	//scene.add( spritey );
-		planet.add(sprite);
+	//planet.add(sprite);
+	var spritee = makeTextSprite( sphere_price );
+		planet.add(spritee);
 		planets.push(planet);
 		scene.add(planet);
 	
@@ -642,7 +611,7 @@ function createwrittensphere(sphere_price, sphere_size){
 		scene.add(group);*/
 }
 
-function createwrittensphere2( sphere_price, sphere_size, orbit){
+function createwrittensphere2( sphere_price, sphere_size, orbit, colors,sphere_name){
 	//Ground
 
 
@@ -650,7 +619,7 @@ function createwrittensphere2( sphere_price, sphere_size, orbit){
 
 		var geom = new THREE.SphereGeometry(sphere_size, 32, 24);
 		var mat = new THREE.MeshBasicMaterial({
-		  color:  "blue",
+		  color:  colors,
 		  //wireframe: true
 		});
 		var planet = new THREE.Mesh(geom, mat);
@@ -673,7 +642,7 @@ function createwrittensphere2( sphere_price, sphere_size, orbit){
 		ctx.font = "20pt Arial";
 		ctx.fillStyle = "white";
 		ctx.textAlign = "center";
-		ctx.fillText(sphere_price, 128, 44);
+		ctx.fillText(sphere_name, 128, 44);
 		//console.log(ctx);
 		var tex = new THREE.Texture(canvas);
 		tex.needsUpdate = true;
@@ -681,9 +650,17 @@ function createwrittensphere2( sphere_price, sphere_size, orbit){
 		  map: tex
 		});
 		var sprite = new THREE.Sprite(spriteMat);
-		sprite.visible=false;
+		sprite.visible=true;
+		sprite.position.x = planet_x +(Math.cos(timestamp2 * 20) * orbit);
+		sprite.position.z = planet_z +( Math.sin(timestamp2 * 20) * orbit);
+		var scaleFactor = 9;
+		var scale = scaleVector.subVectors(planet.position, camera.position).length() / scaleFactor;
+		sprite.scale.set(scale*2, scale*2, 1);
+		scene.add(sprite);
 
-		planet.add(sprite);
+		var spritee = makeTextSprite( sphere_price );
+		spritee.visible=false;
+		planet.add(spritee);
 		planets.push(planet);
 		scene.add(planet);
 	
@@ -745,6 +722,7 @@ function onMouseMove( event ) {
 function exchange_sphere(where_to_start, register_number){
 	//alert(where_to_start);
 	//alert(sphere_cant_exchange[register_number]);
+	
 	timestamp=0;
 	radii=0;
 	var shape = new THREE.Shape();
@@ -757,8 +735,15 @@ function exchange_sphere(where_to_start, register_number){
 		}));
 		scene.add(orbit [0]);
 	var index = where_to_start+2;//indice
+		var biggest=0;
+		var actual=0;
+		var biggest_hijo=0;
+		var actual_hijo=0;
+
+	
 	for (let indexx=0 ; indexx < sphere_cant_exchange[register_number]-3; indexx++) {
-		
+		//alert(info[index][sphere_cant_exchange[register_number]]);
+		//alert(info[index][0]);
 			var counter=0;
 			var first;
 				var regex=/,/gi;
@@ -772,19 +757,28 @@ function exchange_sphere(where_to_start, register_number){
 						var $='$';
 						regex = $ ;
 						sphere_size= sphere_size.replace(regex, '') ;
-						for(let kndex=0 ; kndex < 50; kndex++)
-						{
-							if (sphere_size>100){
-								sphere_size=sphere_size/5;
+						//alert(sphere_size);
+						for (let indexxx=1 ; indexxx < 12; indexxx++) {
+		
+							sphere_size=sphere_size/10;
+							
+							if (sphere_size<10){
+							
+								sphere_size=(indexxx-1)*20;
+								indexxx=12;
 							}
+					
 						}
-					//	sphere_size=sphere_size/1000000;
-					//	alert(sphere_size);
+					
+						
+						
+
+					//alert(sphere_size);
 						//info[index][0]=info[index][0]+'-------------------------';
 						//alert(info[index][0]);
 						//timestamp=sphere_size;
 						//alert(sphere_size+info[index][0]);
-						createwrittensphere( info[index][0], sphere_size);
+						createwrittensphere( info[index][0], sphere_size, info[index][sphere_cant_exchange[register_number]]);
 					//contamos la cantidad de fechas que hay
 					//orbit
 					
@@ -797,7 +791,11 @@ function exchange_sphere(where_to_start, register_number){
 		 orbit [indexx]= new THREE.Line(spacedPoints, new THREE.LineBasicMaterial({
 		  color: "yellow"
 		}));
-		scene.add(orbit[indexx]);
+		 scene.add(orbit[indexx]);
+		 var colors= Math.random() * "0xFFFFFF"; 
+
+		 
+
 					for (let jndex=1 ; jndex < sphere_cant_exchange[register_number]; jndex++){
 						var regex=/,/gi;
 						timestamp2++;
@@ -805,15 +803,25 @@ function exchange_sphere(where_to_start, register_number){
 						var $='$';
 						regex = $ ;
 						sphere_size= sphere_size.replace(regex, '') ;
-						for(let ndex=0 ; ndex < 50; ndex++)
-						{//alert(sphere_size+info[index][jndex]);
-							if (sphere_size>50){
-								sphere_size=sphere_size/5;
-								
+					//	alert(sphere_size);
+						for (let indexxx=1 ; indexxx < 12; indexxx++) {
+		
+							sphere_size=sphere_size/10;
+							
+							if (sphere_size<10){
+							
+								sphere_size=(indexxx-1)*20;
+								//alert(sphere_size);
+								indexxx=12;
 							}
+					
 						}
-						
-						createwrittensphere2( info[index][jndex], sphere_size, 400);
+
+						//alert(sphere_size);
+					
+							
+						//alert( info[index][jndex]);
+						createwrittensphere2( info[index][jndex], sphere_size, 400,colors,);
 						
 					
 							
