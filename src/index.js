@@ -735,6 +735,7 @@ function exchange_sphere(where_to_start, register_number){
 		}));
 		scene.add(orbit [0]);
 	var index = where_to_start+2;//indice
+	var nombres= where_to_start+1;//nombres de las monedas
 		var biggest=0;
 		var actual=0;
 		var biggest_hijo=0;
@@ -819,9 +820,9 @@ function exchange_sphere(where_to_start, register_number){
 
 						//alert(sphere_size);
 					
-							
+						
 						//alert( info[index][jndex]);
-						createwrittensphere2( info[index][jndex], sphere_size, 400,colors,);
+						createwrittensphere2( info[index][jndex], sphere_size, 400,colors,info[nombres][jndex]);
 						
 					
 							
