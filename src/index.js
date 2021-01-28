@@ -90,6 +90,7 @@ var colors_array_1=[];
 
 var colors_array_2=[];
 var sprite= [];
+var sprite_2= [];
 function init() 
 {
 	
@@ -218,7 +219,8 @@ function main() {
 	camera.position.x = 2000;
 	camera.position.y = 2000;
 	camera.position.z = 2000;
-	camera.lookAt( 0, 0.1, 0 );
+	camera.lookAt( 0, 3000, 0 );
+	
     controls = new OrbitControls( camera, renderer.domElement );
 
 	addLights();
@@ -280,7 +282,7 @@ function addGUIChooseDate (){
 	var counter=0;
 	//for (let indexx = 0; indexx < Date_number; indexx++) {}
 		for (let index = 0; index < info.length; index++) {
-			sphere_cant_exchange[Date_number]++;
+			
 			if(info[index][0]=="Date:"){
 				
 					Date_number++;
@@ -298,6 +300,7 @@ function addGUIChooseDate (){
 					};
 					guiALLF4.add( parameters[index], 'Sphere'   ).name("Date:"+info[index][1]);
 			}
+			sphere_cant_exchange[Date_number]++;
 		}
 	
 	
@@ -431,7 +434,7 @@ function makeTextSprite( message)
 	return sprite;	
 }
 
-function createwrittensphere(sphere_price, sphere_size,sphere_cant, colors){
+function createwrittensphere(sphere_price, sphere_size,sphere_cant, colors,index){
 	//Ground
 
 
@@ -455,32 +458,39 @@ function createwrittensphere(sphere_price, sphere_size,sphere_cant, colors){
 		planet.userData.speed = sphere_size;
 	
 
-		/*
+		
 		var canvas = document.createElement('canvas');
 		canvas.width = 256;
 		canvas.height = 256;
 		var ctx = canvas.getContext("2d");
 		
 		//ctx.translate(100,0);
-		ctx.font = "44pt Arial";
+		ctx.font = "38pt Arial";
 		ctx.fillStyle = "white";
 		ctx.textAlign = "center";
-		ctx.fillText(sphere_price, 128, 44);
+		ctx.fillText( sphere_price, 128, 44);
 		//console.log(ctx);
 		var tex = new THREE.Texture(canvas);
 		tex.needsUpdate = true;
 		var spriteMat = new THREE.SpriteMaterial({
 		  map: tex
 		});
-		var sprite = new THREE.Sprite(spriteMat);
-	*/
+		sprite_2[index] = new THREE.Sprite(spriteMat);
+		sprite_2[index].position.x =planet.position.x;// planet_x +(Math.cos(timestamp2 * 20) * orbit);
+		sprite_2[index].position.z = planet.position.z;//planet_z +( Math.sin(timestamp2 * 20) * orbit);
+		var scaleFactor = 9;
+		var scale = scaleVector.subVectors(planet.position, camera.position).length() / scaleFactor;
+		sprite_2[index].scale.set(scale, scale, 1);
+		sprite_2[index].position.y= 400;
+		scene.add(sprite_2[index]);
 
 
 	//var sprite = makeTextSprite( sphere_cant );
 //	spritey.position.set(55,105,55);
 	//scene.add( spritey );
 	//planet.add(sprite);
-	var spritee = makeTextSprite( sphere_price );
+	var spritee = makeTextSprite(  sphere_cant);
+	spritee.visible=false;
 		planet.add(spritee);
 		planets.push(planet);
 		scene.add(planet);
@@ -661,8 +671,8 @@ function createwrittensphere2( sphere_price, sphere_size, orbit, colors,sphere_n
 		
 		sprite[indice] = new THREE.Sprite(spriteMat);
 		sprite[indice].visible=true;
-		sprite[indice].position.x = planet_x +(Math.cos(timestamp2 * 20) * orbit);
-		sprite[indice].position.z = planet_z +( Math.sin(timestamp2 * 20) * orbit);
+		sprite[indice].position.x =planet.position.x;// planet_x +(Math.cos(timestamp2 * 20) * orbit);
+		sprite[indice].position.z = planet.position.z;//planet_z +( Math.sin(timestamp2 * 20) * orbit);
 		
 		var scaleFactor = 9;
 		var scale = scaleVector.subVectors(planet.position, camera.position).length() / scaleFactor;
@@ -755,19 +765,22 @@ function exchange_sphere(where_to_start, register_number){
 		var actual_hijo=0;
 
 	
-	for (let indexx=0 ; indexx < sphere_cant_exchange[register_number]-3; indexx++) {
+	for (let indexx=0 ; indexx < sphere_cant_exchange[register_number]-4; indexx++) {
 		//alert(info[index][sphere_cant_exchange[register_number]]);
 		//alert(info[index][0]);
 			var counter=0;
 			var first;
 				var regex=/,/gi;
-				
+				//console.log(info[index][0]);
+				//console.log(info[index][sphere_cant_exchange[register_number]]);
+				//alert(info[index][0]);
+				//alert(info[index][sphere_cant_exchange[register_number]]);
 				//info[index][0]
 				//info[index][sphere_cant_exchange[register_number]]
 				timestamp2=0;
 						counter++;
 						first= counter;
-						var sphere_size= info[index][sphere_cant_exchange[register_number]].replace(regex, '') ;
+						var sphere_size= info[index][ info[0].length-1].replace(regex, '') ;
 						var $='$';
 						regex = $ ;
 						sphere_size= sphere_size.replace(regex, '') ;
@@ -792,7 +805,7 @@ function exchange_sphere(where_to_start, register_number){
 						//alert(info[index][0]);
 						//timestamp=sphere_size;
 						//alert(sphere_size+info[index][0]);
-						createwrittensphere( info[index][0], sphere_size, info[index][sphere_cant_exchange[register_number]],colors_array_1[indexx]);
+						createwrittensphere( info[index][0], sphere_size, info[index][sphere_cant_exchange[register_number]],colors_array_1[indexx],indexx);
 					//contamos la cantidad de fechas que hay
 					//orbit
 					
@@ -808,9 +821,9 @@ function exchange_sphere(where_to_start, register_number){
 		 scene.add(orbit[indexx]);
 		  
 
-		 
+		 console.log(sphere_cant_exchange[register_number]);
 
-					for (let jndex=1 ; jndex < sphere_cant_exchange[register_number]; jndex++){
+					for (let jndex=1 ; jndex < info[0].length-1; jndex++){
 						var regex=/,/gi;
 						timestamp2++;
 						var sphere_size= info[index][jndex].replace(regex, '') ;
@@ -832,10 +845,12 @@ function exchange_sphere(where_to_start, register_number){
 						}*/
 
 						//alert(sphere_size);
-					
 						
-						//alert( info[index][jndex]);
-						createwrittensphere2( info[index][jndex], sphere_size/2000000, 400,colors_array_2[jndex],info[nombres][jndex],number);
+						//console.log(info[nombres][jndex]);
+						//console.log(info[index][jndex]);
+						//alert(info[nombres][jndex]);
+						//alert(info[index][jndex]);
+						createwrittensphere2( info[index][jndex], sphere_size/200000, 400,colors_array_2[jndex],info[nombres][jndex],number);
 						
 						number++;
 							
@@ -845,11 +860,20 @@ function exchange_sphere(where_to_start, register_number){
 					index++;
 	}
 	
-	
+	camera.position.x = 200;
+	camera.position.y = 200;
+	camera.position.z = 200;
+
+	//camera.lookAt(300, 300, 0);
+	camera.rotation.y=90;
 }
 
 function Start_Sphere(where_to_start, register_number)
 {
+	
+	camera.position.x = 2000;
+	camera.position.y = 2000;
+	camera.position.z = 2000;
 	planets.forEach( function(planet){
     
 		scene.remove( planet);
@@ -867,6 +891,10 @@ function Start_Sphere(where_to_start, register_number)
 	  for(let kndex=0 ; kndex < sprite.length; kndex++)
 	  {
 		if( sprite!= []){ scene.remove( sprite[kndex]);}
+	  }
+	  for(let kndex=0 ; kndex < sprite_2.length; kndex++)
+	  {
+		if( sprite_2!= []){ scene.remove( sprite_2[kndex]);}
 	  }
 	 
 	//alert(camera.position);
