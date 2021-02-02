@@ -889,9 +889,9 @@ function Start_Sphere(where_to_start, register_number)
 	camera_position_x = camera.position.x ;
 	camera_position_y = camera.position.y;
 	camera_position_z = camera.position.z;
-	camera.position.x = 2000;
+	camera.position.x = 0;
 	camera.position.y = 2000;
-	camera.position.z = 2000;
+	camera.position.z = 0;
 	gui.removeFolder(Sumarry);
 	planets.forEach( function(planet){
     
