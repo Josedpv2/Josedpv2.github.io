@@ -91,6 +91,11 @@ var colors_array_1=[];
 var colors_array_2=[];
 var sprite= [];
 var sprite_2= [];
+var camera_position_x;
+var camera_position_y;
+var camera_position_z;
+var Sumarry; 
+var mat= [];
 function init() 
 {
 	
@@ -125,7 +130,8 @@ function init()
 	camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
     
 		
-	
+	camera.position
+	camera.
 	
 	//Lights
 	// spotLight = new THREE.SpotLight( 0xffff00 );
@@ -219,7 +225,7 @@ function main() {
 	camera.position.x = 2000;
 	camera.position.y = 2000;
 	camera.position.z = 2000;
-	camera.lookAt( 0, 3000, 0 );
+	//camera.lookAt( 0, 3000, 0 );
 	
     controls = new OrbitControls( camera, renderer.domElement );
 
@@ -256,7 +262,7 @@ function main() {
 	
 
 	addGUI();
-	
+	Sumarry= gui.addFolder('Index Currency');
 	
      
 //Glass sphere creator receive the radius of the sphere
@@ -630,17 +636,15 @@ function createwrittensphere(sphere_price, sphere_size,sphere_cant, colors,index
 		scene.add(group);*/
 }
 
-function createwrittensphere2( sphere_price, sphere_size, orbit, colors,sphere_name,indice){
+function createwrittensphere2( sphere_price, sphere_size, orbit, mat,sphere_name,indice){
 	//Ground
 
 
 	 
 
 		var geom =  new THREE.BoxGeometry(32,sphere_size ,24);
-		var mat = new THREE.MeshBasicMaterial({
-		  color:  colors,
-		  //wireframe: true
-		});
+		
+		 
 		var planet = new THREE.Mesh(geom, mat);
 		
 		
@@ -763,7 +767,14 @@ function exchange_sphere(where_to_start, register_number){
 		var actual=0;
 		var biggest_hijo=0;
 		var actual_hijo=0;
-
+		Sumarry= gui.addFolder('Index Currency');
+		for (let jndex=1 ; jndex < info[0].length-1; jndex++){
+			mat[jndex] = new THREE.MeshBasicMaterial({
+				color:  colors_array_2[jndex],
+				//wireframe: true
+			});
+			Sumarry.addColor( mat[jndex], 'color'  ).name(info[nombres][jndex]);
+		}
 	
 	for (let indexx=0 ; indexx < sphere_cant_exchange[register_number]-4; indexx++) {
 		//alert(info[index][sphere_cant_exchange[register_number]]);
@@ -805,6 +816,9 @@ function exchange_sphere(where_to_start, register_number){
 						//alert(info[index][0]);
 						//timestamp=sphere_size;
 						//alert(sphere_size+info[index][0]);
+						
+						
+						
 						createwrittensphere( info[index][0], sphere_size, info[index][sphere_cant_exchange[register_number]],colors_array_1[indexx],indexx);
 					//contamos la cantidad de fechas que hay
 					//orbit
@@ -850,7 +864,8 @@ function exchange_sphere(where_to_start, register_number){
 						//console.log(info[index][jndex]);
 						//alert(info[nombres][jndex]);
 						//alert(info[index][jndex]);
-						createwrittensphere2( info[index][jndex], sphere_size/200000, 400,colors_array_2[jndex],info[nombres][jndex],number);
+						
+						createwrittensphere2( info[index][jndex], sphere_size/200000, 400,mat[jndex],info[nombres][jndex],number);
 						
 						number++;
 							
@@ -860,20 +875,24 @@ function exchange_sphere(where_to_start, register_number){
 					index++;
 	}
 	
-	camera.position.x = 200;
-	camera.position.y = 200;
-	camera.position.z = 200;
-
+	camera.position.x = camera_position_x;
+	camera.position.y = camera_position_y;
+	camera.position.z = camera_position_z;
+	Sumarry.open();
 	//camera.lookAt(300, 300, 0);
 	camera.rotation.y=90;
 }
 
 function Start_Sphere(where_to_start, register_number)
 {
-	
+
+	camera_position_x = camera.position.x ;
+	camera_position_y = camera.position.y;
+	camera_position_z = camera.position.z;
 	camera.position.x = 2000;
 	camera.position.y = 2000;
 	camera.position.z = 2000;
+	gui.removeFolder(Sumarry);
 	planets.forEach( function(planet){
     
 		scene.remove( planet);
