@@ -113,11 +113,11 @@ function init()
 		colorL: "#ffffff", // RGB array
 		penunmbra: 0.2,
 		helpSpot:true,
-		intSpot:1,
+		intSpot:0,
 		
-		intAmbien:1,
+		intAmbien:0,
 		color0: "#443333", 
-		intHemis:1,
+		intHemis:0,
 		colorg: "#111122", 
 	};
 	
@@ -136,7 +136,7 @@ function init()
 	//Lights
 	// spotLight = new THREE.SpotLight( 0xffff00 );
 	light = new THREE.AmbientLight( obj.color0 ); // soft white light
-	hemisLight = new THREE.HemisphereLight( obj.color0, obj.colorg, 1 );
+	hemisLight = new THREE.HemisphereLight( obj.color0, obj.colorg, 0.0001);
 	
 
 	stats = new Stats();
@@ -157,7 +157,7 @@ function addLights()
 	//scene.add( spotLightHelper );
 	//fireworklight
 	var light = new THREE.PointLight(0xffffff);
-	light.position.set(0,250,0);
+	light.position.set(-10000,0,10000);
 	scene.add(light);
 }
 
@@ -165,7 +165,7 @@ function addGUI()
 {
 	stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
 	document.body.appendChild( stats.dom );
-	var guiALL= gui.addFolder('Light');
+	/*var guiALL= gui.addFolder('Light');
 	var guiSL = guiALL.addFolder('SpotLight');
 	guiSL.add(obj, 'helpSpot').onChange(function (val) {
 		spotLightHelper.visible = val;
@@ -203,7 +203,7 @@ function addGUI()
 		hemisLight.intensity = val;
 	}).name('Intensity');
 	
-
+*/
 	
 }
 
@@ -460,8 +460,12 @@ function createwrittensphere(sphere_price, sphere_size,sphere_cant, colors,index
 	 
 
 		var geom = new THREE.SphereGeometry(sphere_size, 34, 24);
-		var mat = new THREE.MeshBasicMaterial({
-		  color:colors,
+		var mat = new THREE.MeshPhongMaterial({
+		  emissive:colors,
+		  roughness: 0,
+    	  metalness: 1,
+		  emissiveIntensity:1,
+
 		  //wireframe: true
 		});
 		var planet = new THREE.Mesh(geom, mat);
@@ -782,8 +786,11 @@ function exchange_sphere(where_to_start, register_number){
 		var actual_hijo=0;
 		//Sumarry= gui.addFolder('Index Currency');
 		for (let jndex=1 ; jndex < info[0].length-1; jndex++){
-			mat[jndex] = new THREE.MeshBasicMaterial({
-				color:  colors_array_2[jndex],
+			mat[jndex] = new THREE.MeshPhongMaterial({
+				emissive:  colors_array_2[jndex],
+				roughness: 0,
+    	  metalness: 1,
+		  emissiveIntensity:1,
 				//wireframe: true
 			});
 			//Sumarry.addColor( mat[jndex], 'color'  ).name(info[nombres][jndex]);
