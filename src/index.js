@@ -136,7 +136,7 @@ function init()
 	//Lights
 	// spotLight = new THREE.SpotLight( 0xffff00 );
 	light = new THREE.AmbientLight( obj.color0 ); // soft white light
-	hemisLight = new THREE.HemisphereLight( obj.color0, obj.colorg, 0.0001);
+	hemisLight = new THREE.HemisphereLight( obj.color0, obj.colorg,1);
 	
 
 	stats = new Stats();
@@ -156,9 +156,9 @@ function addLights()
 	spotLightHelper = new THREE.SpotLightHelper( spotLight );
 	//scene.add( spotLightHelper );
 	//fireworklight
-	var light = new THREE.PointLight(0xffffff);
+	/*var light = new THREE.PointLight(0xffffff);
 	light.position.set(-10000,0,10000);
-	scene.add(light);
+	scene.add(light);*/
 }
 
 function addGUI() 
@@ -222,9 +222,9 @@ function main() {
 //	renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
 	
 	//Camera
-	camera.position.x = 2000;
-	camera.position.y = 2000;
-	camera.position.z = 2000;
+	camera.position.x = 3000;
+	camera.position.y = 3000;
+	camera.position.z = 3000;
 	//camera.lookAt( 0, 3000, 0 );
 	
     controls = new OrbitControls( camera, renderer.domElement );
@@ -788,6 +788,7 @@ function exchange_sphere(where_to_start, register_number){
 		for (let jndex=1 ; jndex < info[0].length-1; jndex++){
 			mat[jndex] = new THREE.MeshPhongMaterial({
 				emissive:  colors_array_2[jndex],
+				
 				roughness: 0,
     	  metalness: 1,
 		  emissiveIntensity:1,
