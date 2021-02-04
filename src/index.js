@@ -230,10 +230,23 @@ function main() {
     controls = new OrbitControls( camera, renderer.domElement );
 
 	addLights();
+	
+		var colors=[];
+		colors[1]="red";
+		colors[2]="blue";
+		colors[3]="yellow";
+		colors[4]="green";
+		colors[5]="purple";
+		colors[6]="yellowgreen";
+		colors[7]="orangered";
+		colors[8]="orange";
+		colors[9]="brown";
+		colors[10]="silver";
+		colors[11]="turquoise";
 
-	for (let index = 0; index < 20; index++) {
+	for (let index = 1; index < 12; index++) {
 		colors_array_1[index]=  Math.random() * "0xFFFFFF";
-		colors_array_2[index]= Math.random() *"0xFFFFFF";
+		colors_array_2[index]= colors[index];
 		
 	}
 	 
@@ -262,7 +275,7 @@ function main() {
 	
 
 	addGUI();
-	Sumarry= gui.addFolder('Index Currency');
+	//Sumarry= gui.addFolder('Index Currency');
 	
      
 //Glass sphere creator receive the radius of the sphere
@@ -767,13 +780,13 @@ function exchange_sphere(where_to_start, register_number){
 		var actual=0;
 		var biggest_hijo=0;
 		var actual_hijo=0;
-		Sumarry= gui.addFolder('Index Currency');
+		//Sumarry= gui.addFolder('Index Currency');
 		for (let jndex=1 ; jndex < info[0].length-1; jndex++){
 			mat[jndex] = new THREE.MeshBasicMaterial({
 				color:  colors_array_2[jndex],
 				//wireframe: true
 			});
-			Sumarry.addColor( mat[jndex], 'color'  ).name(info[nombres][jndex]);
+			//Sumarry.addColor( mat[jndex], 'color'  ).name(info[nombres][jndex]);
 		}
 	
 	for (let indexx=0 ; indexx < sphere_cant_exchange[register_number]-4; indexx++) {
@@ -878,7 +891,7 @@ function exchange_sphere(where_to_start, register_number){
 	camera.position.x = camera_position_x;
 	camera.position.y = camera_position_y;
 	camera.position.z = camera_position_z;
-	Sumarry.open();
+	//Sumarry.open();
 	//camera.lookAt(300, 300, 0);
 	camera.rotation.y=90;
 }
@@ -892,7 +905,7 @@ function Start_Sphere(where_to_start, register_number)
 	camera.position.x = 0;
 	camera.position.y = 2000;
 	camera.position.z = 0;
-	gui.removeFolder(Sumarry);
+	//gui.removeFolder(Sumarry);
 	planets.forEach( function(planet){
     
 		scene.remove( planet);

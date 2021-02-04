@@ -2,7 +2,8 @@
 <html>
 <head>
     <title>ThreeJS</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
     <style type="text/css">
         html, body {
 			margin: 0;
@@ -12,11 +13,66 @@
 			width: 100vw;
 			height: 100%;
 			display: block;
+
+			cursor: pointer;
+			outline: 1px solid white;
+			outline-offset: 1px;
 		}
-    </style>
+
+		footer {
+		position: fixed;
+		bottom: 0;
+		right: 0;
+		color: white;
+		font: 10pt monospace;
+		text-align: left;
+		padding: 10pt;
+		margin: 5pt;
+		border: 1px solid white;
+		cursor: default;
+		z-index: 999;
+		background: rgba(0,0,0,0.75);
+		}
+		p span {
+		
+		font-weight: bold;
+		text-decoration: underline;
+		}
+
+	</style>
+	   <script type="text/javascript">
+		/*function llenar(){
+			<script type="text/javascript" src="../index.js">
+			
+			
+			document.getElementById("Celsius").innerHTML = info[1][1] ;
+			document.getElementById("Nexo").innerHTML = info[1][2] ;
+			document.getElementById("BlockFi").innerHTML = info[1][3] ;
+			document.getElementById("Crypto").innerHTML = info[1][4];
+			document.getElementById("Genesis").innerHTML =info[1][5] ;
+			document.getElementById("Galaxy").innerHTML = info[1][6] ;
+			document.getElementById("Ledn").innerHTML = info[1][7] ;
+			document.getElementById("Aave").innerHTML = info[1][8] ;
+			
+		}*/
+	</script>
 </head>
 <body>
 	<canvas id="canvas"></canvas>
     <script src="main.js"></script>
 </body>
+<footer>
+	<p style="color: white ;"><span><td >Index Currency:</td></span></p>
+	<p style="color: red ;">USDC: <span><td >RED</td> </td></span></p>
+	<p style="color: blue ;">USDT: <span><td >BLUE</td></span></p>
+	<p style="color: yellow ;">TUSD: <span><td >YELLOW</td></span></p>
+	<p style="color: green ;">PAX: <span><td >GREEN</td></span></p>
+	<p style="color: purple ;">GUSD: <span><td >PURPLE</td></span></p>
+	<p style="color: yellowgreen ;">BUSD: <span><td >YELLOWGREEN</td></span></p>
+	<p style="color: orangered ;">HUSD: <span><td >ORANGERED</td></span></p>
+	<p style="color:orange;">DAI: <span><td >ORANGE</td></span></p>
+	<p style="color: brown ;">All Stable: <span><td >BROWN</td></span></p>
+	<p style="color: silver ;">ETH: <span><td >SILVER</td></span></p>
+	<p style="color:turquoise ;">Other Not Stable or ETH: <span><td >TURQUOISE</td></span></p>
+  </footer>
 </html>
