@@ -152,8 +152,15 @@ function addLights()
     spotLight.position.set( obj.posX, obj.posY, obj.posZ );
 	scene.add( spotLight );
 	spotLightHelper = new THREE.SpotLightHelper( spotLight );
-	
+	//scene.add( spotLightHelper );
+	//fireworklight
+	var light = new THREE.PointLight(0xffffff);
+	light.intensity=1;
+	light.power=5;
+	light.position.set(0,250,0);
+	scene.add(light);
 }
+
 
 function addGUI() 
 {
@@ -278,20 +285,6 @@ function addGUIChooseDate (){
    
 }
 
-function createGlassSphere(radius){
-	const glassGeometry = new THREE.SphereGeometry(radius, 32, 32);
-	const glassMaterial = new THREE.MeshPhongMaterial({color: 0x0, specular:0xFFFFFF, shininess: 100, opacity:0.3, transparent: true});
-	const mesh = new THREE.Mesh(glassGeometry, glassMaterial);
-	return mesh;
-}
-
-//Sphere creator receive the radius and the color of the sphere
-function createColorSphere(radius, hexColor){
-	const colorSphereGeometry = new THREE.SphereGeometry(radius, 32, 32);
-	const sphereMaterial = new THREE.MeshLambertMaterial({color: hexColor});
-	let mesh = new THREE.Mesh(colorSphereGeometry, sphereMaterial);
-	return mesh;
-}
 
 //receive object that need to detects colisions in the x, z coordinates
 function colisionDetector (controlElement, interactiveElement){
@@ -394,6 +387,7 @@ function createwrittensphere(sphere_price, sphere_size,sphere_cant, colors,index
 		var geom = new THREE.SphereGeometry(sphere_size, 34, 24);
 		var mat = new THREE.MeshPhongMaterial({
 		  emissive:colors,
+		  specular:0xFFFFFF, shininess: 100, opacity:0.9,
 		  roughness: 0,
     	  metalness: 1,
 		  emissiveIntensity:1,
@@ -567,7 +561,7 @@ function exchange_sphere(where_to_start, register_number){
 		
 		for (let jndex=1 ; jndex < info[0].length-1; jndex++){
 			mat[jndex] = new THREE.MeshPhongMaterial({
-				emissive:  colors_array_2[jndex],
+				emissive:  colors_array_2[jndex],specular:0xFFFFFF, shininess: 100, opacity:0.8, transparent: true, 
 				
 				roughness: 0,
     	  metalness: 1,
