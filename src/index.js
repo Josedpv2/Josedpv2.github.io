@@ -154,11 +154,7 @@ function addLights()
 	spotLightHelper = new THREE.SpotLightHelper( spotLight );
 	//scene.add( spotLightHelper );
 	//fireworklight
-	var light = new THREE.PointLight(0xffffff);
-	light.intensity=1;
-	light.power=5;
-	light.position.set(0,250,0);
-	scene.add(light);
+	
 }
 
 
@@ -561,7 +557,7 @@ function exchange_sphere(where_to_start, register_number){
 		
 		for (let jndex=1 ; jndex < info[0].length-1; jndex++){
 			mat[jndex] = new THREE.MeshPhongMaterial({
-				emissive:  colors_array_2[jndex],specular:0xFFFFFF, shininess: 100, opacity:0.8, transparent: true, 
+				emissive:  colors_array_2[jndex],specular:0xFFFFFF, shininess: 100, opacity:0.8,
 				
 				roughness: 0,
     	  metalness: 1,
