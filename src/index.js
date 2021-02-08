@@ -19,7 +19,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { info } from '../src/needed/csvjson.js';
 //Model loaders
 const cameraM = new THREE.PerspectiveCamera(40, window.innerWidth/window.innerHeight, 0.1, 1000);
-cameraM.position.set(0, 0, 0,);
+cameraM.position.set(3000, 3000, 3000);
 //variable for camera change (future implementation)
 let activeCamera = cameraM
 
@@ -41,7 +41,7 @@ const clock = new THREE.Clock();
 var renderer, scene, bgScene, camera;
 renderer = new THREE.WebGLRenderer({ canvas });
 const cameraControls = new CameraControls( activeCamera, renderer.domElement );
-cameraControls.setLookAt( 0, 2, 0, 0.0001, 2, 0, false );
+cameraControls.setLookAt( 10000, 20000, 200000, 0.0001, 2, 0, false );
 cameraControls.maxDistance = 0.0001;
 cameraControls.minDistance = 0;
 cameraControls.truckSpeed = 2.0;
@@ -156,14 +156,33 @@ function addLights()
 	//fireworklight
 	
 }
-
-
+function NEAR() 
+{camera.position.x = 200;
+	camera.position.y = 200;
+	camera.position.z = 200;
+	}
+function FAR() 
+{camera.position.x = 3000;
+	camera.position.y = 3000;
+	camera.position.z = 3000;
+	}
+function RESET() 
+{controls.reset();}
 function addGUI() 
 {
 	stats.showPanel( 0 ); 
 	document.body.appendChild( stats.dom );
-
+	var gui_camera=gui.addFolder('Camera');
 	
+	var parameters = 
+					{
+							Near:function() { NEAR(); },
+							Far:function() { FAR(  ); },
+							Reset:   function() { RESET(  ); },
+					};
+					gui_camera.add( parameters, 'Near'   ).name("Near");
+					gui_camera.add( parameters, 'Far'   ).name("Far");
+					gui_camera.add( parameters, 'Reset'   ).name("Reset");
 }
 
 function main() {
@@ -283,11 +302,8 @@ function addGUIChooseDate (){
 
 
 //receive object that need to detects colisions in the x, z coordinates
-function colisionDetector (controlElement, interactiveElement){
-	let x = (cameraControls.getPosition().x >= interactiveElement.position.x - 20) && (cameraControls.getPosition().x < interactiveElement.position.x + 20)
-	let z = (cameraControls.getPosition().z >= interactiveElement.position.z - 20) && (cameraControls.getPosition().z < interactiveElement.position.z + 20)
-	return (x && z);
-}let onKeyDown = function ( event ) {
+
+let onKeyDown = function ( event ) {
 	switch ( event.keyCode ) {
 		case 38: // up
 		case 87: // w
@@ -535,7 +551,7 @@ function onMouseMove( event ) {
 
 function exchange_sphere(where_to_start, register_number){
 ;
-	
+//controls.reset();
 	timestamp=0;
 	radii=0;
 	var number=0;
