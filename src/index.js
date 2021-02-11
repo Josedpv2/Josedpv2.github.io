@@ -87,7 +87,7 @@ var planet_y;
 var planet_z;
 var orbit=[];
 var colors_array_1=[];
-
+var info_bars= [[]];
 var colors_array_2=[];
 var sprite= [];
 var sprite_2= [];
@@ -512,29 +512,36 @@ function createwrittensphere2( sphere_price, sphere_size, orbit, mat,sphere_name
 		
 	  
 }
-var spriteee=0;
+var INTERSECTED=null;
 function raycast() {
       
 	raycaster.setFromCamera( mouse, camera );
 	
   var intersects = raycaster.intersectObjects(planets );
-  var INTERSECTED;
+  
   
 		  if ( intersects.length > 0 ) {
-			INTERSECTED = intersects[ 0 ].object;
-			
-			spriteee= INTERSECTED.children[0];
-			spriteee.visible=true;
-	
-				
+			  if(INTERSECTED != intersects[ 0 ].object){
+				if(INTERSECTED){
+				  
+					INTERSECTED.children[0].visible=false;
+					
+				}
+				INTERSECTED = intersects[ 0 ].object;
+					
+				INTERSECTED.children[0].visible=true;
+			  }
 			  
 	
 		  } else {
 
-		
-			if (spriteee!=0) {
-				spriteee.visible=false;
+			if(INTERSECTED){
+				  
+				INTERSECTED.children[0].visible=false;
+				
 			}
+			INTERSECTED=null;
+			
 		  }
 		  
 	
