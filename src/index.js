@@ -616,9 +616,9 @@ function exchange_sphere(where_to_start, register_number){
 					
 						}
 					
+						//info[index][sphere_cant_exchange[register_number]]
 						
-						
-						createwrittensphere( info[index][0], sphere_size, info[index][sphere_cant_exchange[register_number]],colors_array_1[indexx],indexx);
+						createwrittensphere( info[index][0], sphere_size,  info[index][ info[0].length-1],colors_array_1[indexx],indexx);
 					//contamos la cantidad de fechas que hay
 					//orbit
 					
