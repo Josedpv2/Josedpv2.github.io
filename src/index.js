@@ -73,6 +73,7 @@ var Compound= false;// si voy por Compound
 var exchange= false;//si voy por exchange
 var Spheres_Date=[];//spheres por Date
 var planets = [];
+//var info_bars= [[]];
 //group=new THREE.Object3D();
 var mouse = new THREE.Vector2(1, 1);
 var intersects = [];
@@ -87,7 +88,7 @@ var planet_y;
 var planet_z;
 var orbit=[];
 var colors_array_1=[];
-var info_bars= [[]];
+var info_bars= [[0],[0]];
 var colors_array_2=[];
 var sprite= [];
 var sprite_2= [];
@@ -450,12 +451,17 @@ function createwrittensphere(sphere_price, sphere_size,sphere_cant, colors,index
 	var spritee = makeTextSprite(  sphere_cant);
 	spritee.visible=false;
 		planet.add(spritee);
-		planets.push(planet);
+		planet.name=sphere_cant;
+		info_bars[index]=planet;
+		info_bars[index].name=sphere_cant;
+		info_bars[index][0]=planet;
+		info_bars[index][0].name=sphere_cant;
+		planets[index]=planet;
 		scene.add(planet);
 	
 }
 
-function createwrittensphere2( sphere_price, sphere_size, orbit, mat,sphere_name,indice){
+function createwrittensphere2( sphere_price, sphere_size, orbit, mat,sphere_name,indice,index,jndex){
 	
 
 
@@ -506,6 +512,10 @@ function createwrittensphere2( sphere_price, sphere_size, orbit, mat,sphere_name
 		spritee.position.y=- sphere_size/2;
 		spritee.visible=false;
 		planet.add(spritee);
+		planet.name=indice;
+		info_bars[index][jndex]=planet;
+		info_bars[index][jndex].name=indice;
+		//alert(info_bars[index][jndex]);
 		planets.push(planet);
 		scene.add(planet);
 	
@@ -518,27 +528,92 @@ function raycast() {
 	raycaster.setFromCamera( mouse, camera );
 	
   var intersects = raycaster.intersectObjects(planets );
-  
+  var esfera=false;
+  var x=0;
   
 		  if ( intersects.length > 0 ) {
 			  if(INTERSECTED != intersects[ 0 ].object){
-				if(INTERSECTED){
-				  
-					INTERSECTED.children[0].visible=false;
+				/*info_bars.forEach( function(planet){
+    
+					
+				
+				
+				if(planet==intersects[ 0 ].object)
+					esfera=true;
+					
+				  });*/
+				
+					if(INTERSECTED){
+						for (let index = 0; index < info_bars.length; index++) {
+							planets.forEach( function(planet){
+    
+								if(planet.name==info_bars[x][index].name){
+									planet.children[0].visible=false;
+									planet.scale.set(1,1, 1);}
+							
+								
+								
+								
+							  });
+							
+						}
+						INTERSECTED.children[0].visible=false;
+						INTERSECTED.scale.set(1,1, 1);
+						
+					}
+				INTERSECTED = intersects[ 0 ].object;
+				
+				for (let index = 0; index < info_bars.length; index++) {
+					
+					for (let jndex = 0; jndex < info_bars.length+2; jndex++) {
+					//	alert(index);alert(jndex);
+						//alert(info_bars[index][jndex].name);alert(INTERSECTED.name);
+						if(info_bars[index][jndex].name==INTERSECTED.name){
+							x=index;}
+
+					
+					
+					}
 					
 				}
-				INTERSECTED = intersects[ 0 ].object;
+				for (let index =0 ; index < info_bars.length; index++) {
 					
+					planets.forEach( function(planet){
+    
+						if(planet.name==info_bars[x][index].name){
+							//alert(index);
+							planet.children[0].visible=true;
+							planet.scale.set(1.1, 1.1, 1.1);}
+					
+						
+						
+						
+					  });
+				}
+				INTERSECTED.scale.set(1.1, 1.1, 1.1);
 				INTERSECTED.children[0].visible=true;
+				
 			  }
 			  
 	
 		  } else {
 
 			if(INTERSECTED){
-				  
+				for (let index = 0; index < info_bars.length; index++) {
+					planets.forEach( function(planet){
+    
+						if(planet.name==info_bars[x][index].name){
+							planet.children[0].visible=false;
+							planet.scale.set(1,1, 1);}
+					
+						
+							
+						
+					  });
+					 // alert(index);alert(x);
+				}
 				INTERSECTED.children[0].visible=false;
-				
+				INTERSECTED.scale.set(1,1, 1);
 			}
 			INTERSECTED=null;
 			
@@ -645,7 +720,7 @@ function exchange_sphere(where_to_start, register_number){
 						sphere_size= sphere_size.replace(regex, '') ;
 				
 						
-						createwrittensphere2( info[index][jndex], sphere_size/200000, 400,mat[jndex],info[nombres][jndex],number);
+						createwrittensphere2( info[index][jndex], sphere_size/200000, 400,mat[jndex],info[nombres][jndex],number,indexx,jndex);
 						
 						number++;
 							
@@ -674,7 +749,7 @@ function Start_Sphere(where_to_start, register_number)
 	planets.forEach( function(planet){
     
 		scene.remove( planet);
-	scene.remove(planet.children[0]) ;
+	//scene.remove(planet.children[0]) ;
 	
 		
 		
@@ -694,7 +769,7 @@ function Start_Sphere(where_to_start, register_number)
 		if( sprite_2!= []){ scene.remove( sprite_2[kndex]);}
 	  }
 	 
-	
+	 info_bars= [[0],[0]];
 	 planets = [];
 	exchange_sphere(where_to_start, register_number);
  	
