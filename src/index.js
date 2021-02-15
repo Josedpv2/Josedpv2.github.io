@@ -452,6 +452,7 @@ function createwrittensphere(sphere_price, sphere_size,sphere_cant, colors,index
 	spritee.visible=false;
 		planet.add(spritee);
 		planet.name=sphere_cant;
+		planet.esfera=false;
 		info_bars[index]=planet;
 		info_bars[index].name=sphere_cant;
 		info_bars[index][0]=planet;
@@ -513,6 +514,7 @@ function createwrittensphere2( sphere_price, sphere_size, orbit, mat,sphere_name
 		spritee.visible=false;
 		planet.add(spritee);
 		planet.name=indice;
+		planet.esfera=true;
 		info_bars[index][jndex]=planet;
 		info_bars[index][jndex].name=indice;
 		//alert(info_bars[index][jndex]);
@@ -528,7 +530,7 @@ function raycast() {
 	raycaster.setFromCamera( mouse, camera );
 	
   var intersects = raycaster.intersectObjects(planets );
-  var esfera=false;
+  var esfera=true;
   var x=0;var total;
   
 		  if ( intersects.length > 0 ) {
@@ -573,26 +575,31 @@ function raycast() {
 					//	alert(index);alert(jndex);
 						//alert(info_bars[index][jndex].name);alert(INTERSECTED.name);
 						if(info_bars[index][jndex].name==INTERSECTED.name){
-							x=index;}
+							x=index;
+							if(info_bars[index][jndex].esfera==false){esfera=false;}
+						}
 
 					
 					
 					}
 					
 				}
-				for (let index =0 ; index < total; index++) {
+				if(esfera==false){
+					for (let index =0 ; index < total; index++) {
+						
+						planets.forEach( function(planet){
+		
+							if(planet.name==info_bars[x][index].name){
+								//alert(index);
+								planet.children[0].visible=true;
+								planet.scale.set(1.1, 1.1, 1.1);}
+						
+							
+							
+							
+						});
+					}
 					
-					planets.forEach( function(planet){
-    
-						if(planet.name==info_bars[x][index].name){
-							//alert(index);
-							planet.children[0].visible=true;
-							planet.scale.set(1.1, 1.1, 1.1);}
-					
-						
-						
-						
-					  });
 				}
 				INTERSECTED.scale.set(1.1, 1.1, 1.1);
 				INTERSECTED.children[0].visible=true;
