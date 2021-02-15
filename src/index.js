@@ -379,8 +379,8 @@ function makeTextSprite( message)
 	var ctx = canvas.getContext("2d");
 
 	
-	ctx.font = "24pt Arial";
-	ctx.fillStyle = "white";
+	ctx.font = "12pt Arial";
+	ctx.fillStyle = "yellow";
 	ctx.textAlign = "center";
 	ctx.fillText( message, 128, 44);
 	
@@ -449,7 +449,7 @@ function createwrittensphere(sphere_price, sphere_size,sphere_cant, colors,index
 
 
 	var spritee = makeTextSprite(  sphere_cant);
-	spritee.visible=false;
+	spritee.visible=true;//******************************************************************************** */
 		planet.add(spritee);
 		planet.name=sphere_cant;
 		planet.esfera=false;
@@ -511,7 +511,7 @@ function createwrittensphere2( sphere_price, sphere_size, orbit, mat,sphere_name
 		//planet.add(sprite);
 		var spritee = makeTextSprite( sphere_price );
 		spritee.position.y=- sphere_size/2;
-		spritee.visible=false;
+		spritee.visible=true;//******************************************************************************** */
 		planet.add(spritee);
 		planet.name=indice;
 		planet.esfera=true;
@@ -740,7 +740,19 @@ function exchange_sphere(where_to_start, register_number){
 
 					index++;
 	}
-	
+	camera.position.y = 3000;
+	planets.forEach( function(planet){
+    
+		var scaleFactor = 9;
+		var sprite = planet.children[0];
+		
+		var scale = scaleVector.subVectors(planet.position, camera.position).length() / scaleFactor;
+		sprite.scale.set(scale*2, scale*2, 1);
+		
+		
+		
+		
+	  });
 	camera.position.x = camera_position_x;
 	camera.position.y = camera_position_y;
 	camera.position.z = camera_position_z;
@@ -812,6 +824,7 @@ function animate()
 	raycast();
 
   requestAnimationFrame(animate);
+  /*
   planets.forEach( function(planet){
     
 	var scaleFactor = 9;
@@ -823,7 +836,7 @@ function animate()
 	
 	
 	
-  });
+  });*/
   render();
   renderer.render(scene, camera);
   controls.update();
