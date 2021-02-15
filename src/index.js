@@ -749,7 +749,7 @@ function exchange_sphere(where_to_start, register_number){
 		var scale = scaleVector.subVectors(planet.position, camera.position).length() / scaleFactor;
 		sprite.scale.set(scale*2, scale*2, 1);
 		
-		
+		sprite.visible=false;
 		
 		
 	  });
