@@ -529,7 +529,7 @@ function raycast() {
 	
   var intersects = raycaster.intersectObjects(planets );
   var esfera=false;
-  var x=0;
+  var x=0;var total;
   
 		  if ( intersects.length > 0 ) {
 			  if(INTERSECTED != intersects[ 0 ].object){
@@ -544,19 +544,19 @@ function raycast() {
 				  });*/
 				
 					if(INTERSECTED){
-						for (let index = 0; index < info_bars.length; index++) {
+						//for (let index = 0; index < total; index++) {
 							planets.forEach( function(planet){
     
-								if(planet.name==info_bars[x][index].name){
+								//if(planet.name==info_bars[x][index].name){
 									planet.children[0].visible=false;
-									planet.scale.set(1,1, 1);}
+									planet.scale.set(1,1, 1);//}
 							
 								
 								
 								
 							  });
 							
-						}
+						//}
 						INTERSECTED.children[0].visible=false;
 						INTERSECTED.scale.set(1,1, 1);
 						
@@ -565,7 +565,11 @@ function raycast() {
 				
 				for (let index = 0; index < info_bars.length; index++) {
 					
-					for (let jndex = 0; jndex < info_bars.length+2; jndex++) {
+					
+					
+					  total= info[0].length-1;
+					//alert(total);
+					for (let jndex = 0; jndex <total; jndex++) {
 					//	alert(index);alert(jndex);
 						//alert(info_bars[index][jndex].name);alert(INTERSECTED.name);
 						if(info_bars[index][jndex].name==INTERSECTED.name){
@@ -576,7 +580,7 @@ function raycast() {
 					}
 					
 				}
-				for (let index =0 ; index < info_bars.length; index++) {
+				for (let index =0 ; index < total; index++) {
 					
 					planets.forEach( function(planet){
     
@@ -599,19 +603,19 @@ function raycast() {
 		  } else {
 
 			if(INTERSECTED){
-				for (let index = 0; index < info_bars.length; index++) {
+				//for (let index = 0; index < info_bars.length; index++) {
 					planets.forEach( function(planet){
     
-						if(planet.name==info_bars[x][index].name){
+						//if(planet.name==info_bars[x][index].name){
 							planet.children[0].visible=false;
-							planet.scale.set(1,1, 1);}
+							planet.scale.set(1,1, 1);//}
 					
 						
 							
 						
 					  });
 					 // alert(index);alert(x);
-				}
+				//}
 				INTERSECTED.children[0].visible=false;
 				INTERSECTED.scale.set(1,1, 1);
 			}
