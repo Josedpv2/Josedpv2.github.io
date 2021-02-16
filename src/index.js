@@ -88,7 +88,7 @@ var planet_y;
 var planet_z;
 var orbit=[];
 var colors_array_1=[];
-var info_bars= [[]];
+//var info_bars= [[]];
 var colors_array_2=[];
 var sprite= [];
 var sprite_2= [];
@@ -108,11 +108,11 @@ function init()
 		},
 	
 		//spotlight
-		posX: -25, 
-		posY: 8, 
-		posZ: 7,
+		posX: 0, 
+		posY: 2000, 
+		posZ: 2000,
 		colorL: "#ffffff", // RGB array
-		penunmbra: 0.2,
+		penunmbra: 1,
 		helpSpot:true,
 		intSpot:0,
 		
@@ -133,9 +133,9 @@ function init()
 	
 	
 	//Lights
-	// spotLight = new THREE.SpotLight( 0xffff00 );
+	//spotLight = new THREE.SpotLight( 0xffff00 );
 	light = new THREE.AmbientLight( obj.color0 ); // soft white light
-	hemisLight = new THREE.HemisphereLight( obj.color0, obj.colorg,1);
+	hemisLight = new THREE.HemisphereLight( obj.color0, obj.colorg,0.2);
 	
 
 	stats = new Stats();
@@ -155,8 +155,11 @@ function addLights()
 	spotLightHelper = new THREE.SpotLightHelper( spotLight );
 	//scene.add( spotLightHelper );
 	//fireworklight
-	
+	var light = new THREE.PointLight(0xffffff,1);
+	light.position.set(0,2000,2000);
+	scene.add(light);
 }
+
 function NEAR() 
 {camera.position.x = 200;
 	camera.position.y = 200;
@@ -173,6 +176,9 @@ function addGUI()
 {
 	stats.showPanel( 0 ); 
 	document.body.appendChild( stats.dom );
+
+
+	
 	var gui_camera=gui.addFolder('Camera');
 	
 	var parameters = 
@@ -399,11 +405,11 @@ function createwrittensphere(sphere_price, sphere_size,sphere_cant, colors,index
 
 		var geom = new THREE.SphereGeometry(sphere_size, 34, 24);
 		var mat = new THREE.MeshPhongMaterial({
+			color:colors, 
 		  emissive:colors,
-		  specular:0xFFFFFF, shininess: 0, opacity:0.9,
-		  roughness: 0,
-    	  metalness: 1,
-		  emissiveIntensity:1,
+		  specular:0x101010, shininess: 0, opacity:0.9,
+		 // roughness: 0, metalness: 1,
+		  emissiveIntensity:0.5,
 
 		  
 		});
@@ -452,12 +458,12 @@ function createwrittensphere(sphere_price, sphere_size,sphere_cant, colors,index
 	spritee.visible=false;//******************************************************************************** */
 		planet.add(spritee);
 		planet.name=sphere_cant;
-		planet.esfera=false;
+		planet.esfera=false;/*
 		info_bars[index]=planet;
 		info_bars[index].name=sphere_cant;
 		info_bars[index][0]=planet;
-		info_bars[index][0].name=sphere_cant;
-		planets[index]=planet;
+		info_bars[index][0].name=sphere_cant;*/
+		planets.push(planet);
 		scene.add(planet);
 	
 }
@@ -515,8 +521,8 @@ function createwrittensphere2( sphere_price, sphere_size, orbit, mat,sphere_name
 		planet.add(spritee);
 		planet.name=indice;
 		planet.esfera=true;
-		info_bars[index][jndex]=planet;
-		info_bars[index][jndex].name=indice;
+		/*info_bars[index][jndex]=planet;
+		info_bars[index][jndex].name=indice;*/
 		//alert(info_bars[index][jndex]);
 		planets.push(planet);
 		scene.add(planet);
@@ -666,11 +672,11 @@ function exchange_sphere(where_to_start, register_number){
 		
 		for (let jndex=1 ; jndex < info[0].length-1; jndex++){
 			mat[jndex] = new THREE.MeshPhongMaterial({
-				emissive:  colors_array_2[jndex],specular:0xFFFFFF, shininess: 0, opacity:0.8,
+				color:colors_array_2[jndex], 
+				emissive:  colors_array_2[jndex],specular:0x101010, shininess: 0, opacity:0.8,
 				
-				roughness: 0,
-    	  metalness: 1,
-		  emissiveIntensity:1,
+				//roughness: 0,metalness: 1,
+		  emissiveIntensity:0.5,
 				
 			});
 			
@@ -729,7 +735,7 @@ function exchange_sphere(where_to_start, register_number){
 						var $='$';
 						regex = $ ;
 						sphere_size= sphere_size.replace(regex, '') ;
-						console.log(info[index][jndex]);
+						//console.log(info[index][jndex]);
 						
 						createwrittensphere2( info[index][jndex], sphere_size/200000, 400,mat[jndex],info[nombres][jndex],number,indexx,jndex);
 						
@@ -792,7 +798,7 @@ function Start_Sphere(where_to_start, register_number)
 		if( sprite_2!= []){ scene.remove( sprite_2[kndex]);}
 	  }
 	 
-	 info_bars= [[]];
+	 //info_bars= [[]];
 	 planets = [];
 	exchange_sphere(where_to_start, register_number);
  	
