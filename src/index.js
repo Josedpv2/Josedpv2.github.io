@@ -88,7 +88,7 @@ var planet_y;
 var planet_z;
 var orbit=[];
 var colors_array_1=[];
-var info_bars= [[0],[0]];
+var info_bars= [[]];
 var colors_array_2=[];
 var sprite= [];
 var sprite_2= [];
@@ -379,7 +379,7 @@ function makeTextSprite( message)
 	var ctx = canvas.getContext("2d");
 
 	
-	ctx.font = "12pt Arial";
+	ctx.font = "24pt Arial";
 	ctx.fillStyle = "yellow";
 	ctx.textAlign = "center";
 	ctx.fillText( message, 128, 44);
@@ -449,7 +449,7 @@ function createwrittensphere(sphere_price, sphere_size,sphere_cant, colors,index
 
 
 	var spritee = makeTextSprite(  sphere_cant);
-	spritee.visible=true;//******************************************************************************** */
+	spritee.visible=false;//******************************************************************************** */
 		planet.add(spritee);
 		planet.name=sphere_cant;
 		planet.esfera=false;
@@ -511,7 +511,7 @@ function createwrittensphere2( sphere_price, sphere_size, orbit, mat,sphere_name
 		//planet.add(sprite);
 		var spritee = makeTextSprite( sphere_price );
 		spritee.position.y=- sphere_size/2;
-		spritee.visible=true;//******************************************************************************** */
+		spritee.visible=false;//******************************************************************************** */
 		planet.add(spritee);
 		planet.name=indice;
 		planet.esfera=true;
@@ -546,7 +546,7 @@ function raycast() {
 				  });*/
 				
 					if(INTERSECTED){
-						//for (let index = 0; index < total; index++) {
+						/*for (let index = 0; index < total; index++) {
 							planets.forEach( function(planet){
     
 								//if(planet.name==info_bars[x][index].name){
@@ -558,14 +558,14 @@ function raycast() {
 								
 							  });
 							
-						//}
+						}*/
 						INTERSECTED.children[0].visible=false;
 						INTERSECTED.scale.set(1,1, 1);
 						
 					}
 				INTERSECTED = intersects[ 0 ].object;
 				
-				for (let index = 0; index < info_bars.length; index++) {
+				/*for (let index = 0; index < info_bars.length; index++) {
 					
 					
 					
@@ -600,7 +600,7 @@ function raycast() {
 						});
 					}
 					
-				}
+				}*/
 				INTERSECTED.scale.set(1.1, 1.1, 1.1);
 				INTERSECTED.children[0].visible=true;
 				
@@ -610,7 +610,7 @@ function raycast() {
 		  } else {
 
 			if(INTERSECTED){
-				//for (let index = 0; index < info_bars.length; index++) {
+				/*for (let index = 0; index < info_bars.length; index++) {
 					planets.forEach( function(planet){
     
 						//if(planet.name==info_bars[x][index].name){
@@ -622,7 +622,7 @@ function raycast() {
 						
 					  });
 					 // alert(index);alert(x);
-				//}
+				//}*/
 				INTERSECTED.children[0].visible=false;
 				INTERSECTED.scale.set(1,1, 1);
 			}
@@ -720,7 +720,7 @@ function exchange_sphere(where_to_start, register_number){
 		 scene.add(orbit[indexx]);
 		  
 
-		 console.log(sphere_cant_exchange[register_number]);
+		 
 
 					for (let jndex=1 ; jndex < info[0].length-1; jndex++){
 						var regex=/,/gi;
@@ -729,7 +729,7 @@ function exchange_sphere(where_to_start, register_number){
 						var $='$';
 						regex = $ ;
 						sphere_size= sphere_size.replace(regex, '') ;
-				
+						console.log(info[index][jndex]);
 						
 						createwrittensphere2( info[index][jndex], sphere_size/200000, 400,mat[jndex],info[nombres][jndex],number,indexx,jndex);
 						
@@ -739,8 +739,8 @@ function exchange_sphere(where_to_start, register_number){
 					
 
 					index++;
-	}
-	camera.position.y = 3000;
+	}/*
+	camera.position.y = 2000;
 	planets.forEach( function(planet){
     
 		var scaleFactor = 9;
@@ -752,7 +752,7 @@ function exchange_sphere(where_to_start, register_number){
 		sprite.visible=false;
 		
 		
-	  });
+	  });*/
 	camera.position.x = camera_position_x;
 	camera.position.y = camera_position_y;
 	camera.position.z = camera_position_z;
@@ -792,7 +792,7 @@ function Start_Sphere(where_to_start, register_number)
 		if( sprite_2!= []){ scene.remove( sprite_2[kndex]);}
 	  }
 	 
-	 info_bars= [[0],[0]];
+	 info_bars= [[]];
 	 planets = [];
 	exchange_sphere(where_to_start, register_number);
  	
@@ -824,7 +824,7 @@ function animate()
 	raycast();
 
   requestAnimationFrame(animate);
-  /*
+  
   planets.forEach( function(planet){
     
 	var scaleFactor = 9;
@@ -836,7 +836,7 @@ function animate()
 	
 	
 	
-  });*/
+  });
   render();
   renderer.render(scene, camera);
   controls.update();
