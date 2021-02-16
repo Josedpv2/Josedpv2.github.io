@@ -400,7 +400,7 @@ function createwrittensphere(sphere_price, sphere_size,sphere_cant, colors,index
 		var geom = new THREE.SphereGeometry(sphere_size, 34, 24);
 		var mat = new THREE.MeshPhongMaterial({
 		  emissive:colors,
-		  specular:0xFFFFFF, shininess: 100, opacity:0.9,
+		  specular:0xFFFFFF, shininess: 0, opacity:0.9,
 		  roughness: 0,
     	  metalness: 1,
 		  emissiveIntensity:1,
@@ -593,8 +593,8 @@ function raycast() {
 								//alert(index);
 								planet.children[0].visible=true;
 								planet.scale.set(1.1, 1.1, 1.1);}
-						
-							
+								planet.shininess=100;
+								planet.skinning=true;
 							
 							
 						});
@@ -666,7 +666,7 @@ function exchange_sphere(where_to_start, register_number){
 		
 		for (let jndex=1 ; jndex < info[0].length-1; jndex++){
 			mat[jndex] = new THREE.MeshPhongMaterial({
-				emissive:  colors_array_2[jndex],specular:0xFFFFFF, shininess: 100, opacity:0.8,
+				emissive:  colors_array_2[jndex],specular:0xFFFFFF, shininess: 0, opacity:0.8,
 				
 				roughness: 0,
     	  metalness: 1,
