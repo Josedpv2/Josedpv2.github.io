@@ -19,7 +19,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { info } from '../src/needed/csvjson.js';
 //Model loaders
 const cameraM = new THREE.PerspectiveCamera(40, window.innerWidth/window.innerHeight, 0.1, 1000);
-cameraM.position.set(3000, 3000, 3000);
+cameraM.position.set(5000, 5000, 5000);
 //variable for camera change (future implementation)
 let activeCamera = cameraM
 
@@ -39,9 +39,9 @@ const clock = new THREE.Clock();
 // dracoLoader.preload();
 //Scene and render
 var renderer, scene, bgScene, camera;
-renderer = new THREE.WebGLRenderer({ canvas });
+renderer = new THREE.WebGLRenderer({ canvas , antialias: true});
 const cameraControls = new CameraControls( activeCamera, renderer.domElement );
-cameraControls.setLookAt( 10000, 20000, 200000, 0.0001, 2, 0, false );
+cameraControls.setLookAt( 200000, 200000, 200000, 0.0001, 2, 0, false );
 cameraControls.maxDistance = 0.0001;
 cameraControls.minDistance = 0;
 cameraControls.truckSpeed = 2.0;
@@ -112,7 +112,7 @@ function init()
 		posY: 2000, 
 		posZ: 2000,
 		colorL: "#ffffff", // RGB array
-		penunmbra: 1,
+		penunmbra: 5,
 		helpSpot:true,
 		intSpot:0,
 		
@@ -127,7 +127,7 @@ function init()
     // scene.fog = new THREE.Fog( 0x443333, 1, 4 );
  
        var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
-	var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 2, FAR = 10000;
+	var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 2, FAR = 200000;
 	camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
     
 	
@@ -135,7 +135,7 @@ function init()
 	//Lights
 	//spotLight = new THREE.SpotLight( 0xffff00 );
 	light = new THREE.AmbientLight( obj.color0 ); // soft white light
-	hemisLight = new THREE.HemisphereLight( obj.color0, obj.colorg,0.2);
+	hemisLight = new THREE.HemisphereLight( obj.color0, obj.colorg,0.1);
 	
 
 	stats = new Stats();
@@ -148,7 +148,7 @@ function addLights()
 	scene.add( hemisLight );
 	spotLight = new THREE.SpotLight();
     spotLight.angle = Math.PI / 16;
-    spotLight.penumbra = 0.5;
+    spotLight.penumbra = 5;
     spotLight.castShadow = true;
     spotLight.position.set( obj.posX, obj.posY, obj.posZ );
 	scene.add( spotLight );
@@ -377,6 +377,79 @@ function movement(direction, speed){
   	
 }
 
+function makeTextSprite( message, parameters )
+{
+	if ( parameters === undefined ) parameters = {};
+	
+	var fontface = parameters.hasOwnProperty("fontface") ? 
+		parameters["fontface"] : "Arial";
+	
+	var fontsize = parameters.hasOwnProperty("fontsize") ? 
+		parameters["fontsize"] : 18;
+	
+	var borderThickness = parameters.hasOwnProperty("borderThickness") ? 
+		parameters["borderThickness"] : 4;
+	
+	var borderColor = parameters.hasOwnProperty("borderColor") ?
+		parameters["borderColor"] : { r:0, g:0, b:0, a:1.0 };
+	
+	var backgroundColor = parameters.hasOwnProperty("backgroundColor") ?
+		parameters["backgroundColor"] : { r:255, g:255, b:255, a:1.0 };
+
+//	var spriteAlignment = THREE.SpriteAlignment.topLeft;
+		
+	var canvas = document.createElement('canvas');
+	var context = canvas.getContext('2d');
+	context.font = "Bold " + fontsize + "px " + fontface;
+    
+	// get size data (height depends only on font size)
+	var metrics = context.measureText( message );
+	var textWidth = metrics.width;
+	
+	// background color
+	context.fillStyle   = "rgba(" + backgroundColor.r + "," + backgroundColor.g + ","
+								  + backgroundColor.b + "," + backgroundColor.a + ")";
+	// border color
+	context.strokeStyle = "rgba(" + borderColor.r + "," + borderColor.g + ","
+								  + borderColor.b + "," + borderColor.a + ")";
+
+	context.lineWidth = borderThickness;
+	roundRect(context, borderThickness/2, borderThickness/2, textWidth + borderThickness, fontsize * 1.4 + borderThickness, 6);
+	// 1.4 is extra height factor for text below baseline: g,j,p,q.
+	
+	// text color
+	context.fillStyle = "rgba(0, 0, 0, 1.0)";
+
+	context.fillText( message, borderThickness, fontsize + borderThickness);
+	
+	// canvas contents will be used for a texture
+	var texture = new THREE.Texture(canvas) 
+	texture.needsUpdate = true;
+
+	var spriteMaterial = new THREE.SpriteMaterial( 
+		{ map: texture } );
+	var sprite = new THREE.Sprite( spriteMaterial );
+	sprite.scale.set(100,50,10);
+	return sprite;	
+}
+
+// function for drawing rounded rectangles
+function roundRect(ctx, x, y, w, h, r) 
+{
+    ctx.beginPath();
+    ctx.moveTo(x+r, y);
+    ctx.lineTo(x+w-r, y);
+    ctx.quadraticCurveTo(x+w, y, x+w, y+r);
+    ctx.lineTo(x+w, y+h-r);
+    ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+    ctx.lineTo(x+r, y+h);
+    ctx.quadraticCurveTo(x, y+h, x, y+h-r);
+    ctx.lineTo(x, y+r);
+    ctx.quadraticCurveTo(x, y, x+r, y);
+    ctx.closePath();
+    ctx.fill();
+	ctx.stroke();   
+}/*
 function makeTextSprite( message)
 {	
 	var canvas = document.createElement('canvas');
@@ -385,7 +458,7 @@ function makeTextSprite( message)
 	var ctx = canvas.getContext("2d");
 
 	
-	ctx.font = "24pt Arial";
+	ctx.font = "18pt Arial";
 	ctx.fillStyle = "yellow";
 	ctx.textAlign = "center";
 	ctx.fillText( message, 128, 44);
@@ -393,12 +466,12 @@ function makeTextSprite( message)
 	var tex = new THREE.Texture(canvas);
 	tex.needsUpdate = true;
 	var spriteMat = new THREE.SpriteMaterial({
-	map: tex
+	map: tex,//sizeAttenuation: false,
 	});
 	var sprite = new THREE.Sprite(spriteMat);
 	sprite.visible=true;
 	return sprite;	
-}
+}*/
 
 function createwrittensphere(sphere_price, sphere_size,sphere_cant, colors,index){
 	
@@ -454,7 +527,7 @@ function createwrittensphere(sphere_price, sphere_size,sphere_cant, colors,index
 
 
 
-	var spritee = makeTextSprite(  sphere_cant);
+	var spritee = makeTextSprite(  sphere_cant );
 	spritee.visible=false;//******************************************************************************** */
 		planet.add(spritee);
 		planet.name=sphere_cant;
@@ -540,6 +613,8 @@ function raycast() {
   var x=0;var total;
   
 		  if ( intersects.length > 0 ) {
+		
+        
 			  if(INTERSECTED != intersects[ 0 ].object){
 				/*info_bars.forEach( function(planet){
     
@@ -607,6 +682,8 @@ function raycast() {
 					}
 					
 				}*/
+			
+				//INTERSECTED.children[0].position.set(camera.position.x- 400, camera.position.y-400,camera.position.z-INTERSECTED.children[0].position.z-400);
 				INTERSECTED.scale.set(1.1, 1.1, 1.1);
 				INTERSECTED.children[0].visible=true;
 				
@@ -614,7 +691,7 @@ function raycast() {
 			  
 	
 		  } else {
-
+			
 			if(INTERSECTED){
 				/*for (let index = 0; index < info_bars.length; index++) {
 					planets.forEach( function(planet){
