@@ -86,9 +86,12 @@ var scaleVector = new THREE.Vector3();
 var planet_x;
 var planet_y;
 var planet_z;
+var bars_x;
+var bars_z;
+
 var orbit=[];
 var colors_array_1=[];
-//var info_bars= [[]];
+var info_bars= [[]];
 var colors_array_2=[];
 var sprite= [];
 var sprite_2= [];
@@ -97,6 +100,7 @@ var camera_position_y;
 var camera_position_z;
 var Sumarry; 
 var mat= [];
+var action= false;
 function init() 
 {
 	
@@ -414,6 +418,7 @@ function makeTextSprite( message, parameters )
 								  + borderColor.b + "," + borderColor.a + ")";
 
 	context.lineWidth = borderThickness;
+	context.moveTo( 128, 44);
 	roundRect(context, borderThickness/2, borderThickness/2, textWidth + borderThickness, fontsize * 1.4 + borderThickness, 6);
 	// 1.4 is extra height factor for text below baseline: g,j,p,q.
 	
@@ -421,7 +426,7 @@ function makeTextSprite( message, parameters )
 	context.fillStyle = "rgba(0, 0, 0, 1.0)";
 
 	context.fillText( message, borderThickness, fontsize + borderThickness);
-	
+	context.textAlign = "rigth";
 	// canvas contents will be used for a texture
 	var texture = new THREE.Texture(canvas) 
 	texture.needsUpdate = true;
@@ -433,7 +438,8 @@ function makeTextSprite( message, parameters )
 		spriteMaterial.map.minFilter = THREE.NearestFilter;
 	  
 	var sprite = new THREE.Sprite( spriteMaterial );
-	sprite.scale.set(100,50,10);
+	sprite.scale.set(100,50,1);
+	
 	return sprite;	
 }
 
@@ -539,12 +545,17 @@ material.roughnessMap = roughnessMap;
 var planet = new THREE.Mesh(geometry, material);
 var orbit = 1500;
 planet.position.y=200;
-planet.position.x = Math.cos(60*timestamp ) * orbit;
-planet.position.z = Math.sin(60*timestamp ) * orbit;
+planet.position.x = Math.cos(60*timestamp ) ;
+planet.position.z = Math.sin(60*timestamp );
+bars_z=planet.position.z;
+planet_y=sphere_size;
+bars_x=planet.position.x;
+
+planet.position.x = planet.position.x  * orbit;
+planet.position.z = planet.position.z * orbit;
 planet_z=planet.position.z;
 planet_y=sphere_size;
 planet_x=planet.position.x;
-timestamp++;
 planet.userData.orbit = orbit;
 planet.userData.speed = sphere_size;
 
@@ -565,7 +576,7 @@ planet.userData.speed = sphere_size;
 		var spriteMat = new THREE.SpriteMaterial({
 		  map: tex
 		});
-		sprite_2[index] = new THREE.Sprite(spriteMat);
+		sprite_2[index] =makeTextSprite(  sphere_price );// new THREE.Sprite(spriteMat);
 		sprite_2[index].position.x =planet.position.x;
 		sprite_2[index].position.z = planet.position.z;
 		var scaleFactor = 9;
@@ -576,20 +587,28 @@ planet.userData.speed = sphere_size;
 
 
 
-	var spritee = makeTextSprite(  sphere_cant );
-	spritee.visible=false;//******************************************************************************** */
-		planet.add(spritee);
+		info_bars[index] = makeTextSprite(  sphere_cant );
+		info_bars[index].position.x = bars_x ;
+		info_bars[index].position.z = bars_z;
+	
+	//******************************************************************************** */
+	//planet.add(spritee);
 		planet.name=sphere_cant;
-		planet.esfera=false;/*
-		info_bars[index]=planet;
-		info_bars[index].name=sphere_cant;
-		info_bars[index][0]=planet;
-		info_bars[index][0].name=sphere_cant;*/
+		planet.esfera=false;
+		info_bars[index] [0]= makeTextSprite(  sphere_cant );
+		info_bars[index][0].visible=true;
+		info_bars[index][0].position.x = bars_x * 800;
+		info_bars[index][0].position.y = 200;
+		info_bars[index][0].position.z = bars_z*800;
+		info_bars[index][0].name=sphere_cant;
+		
+		//alert(info_bars[index][jndex]);
+		scene.add(info_bars[index][0]);
 		planets.push(planet);
 		scene.add(planet);
-	
+		timestamp++;
 }
-
+ 
 function createwrittensphere2( sphere_price, sphere_size, orbit, material,sphere_name,indice,index,jndex){
 	
 
@@ -651,7 +670,7 @@ var planet = new THREE.Mesh(geometry, material);
 		  map: tex
 		});
 		
-		sprite[indice] = new THREE.Sprite(spriteMat);
+		sprite[indice] = makeTextSprite(  sphere_name ); //new THREE.Sprite(spriteMat);
 		sprite[indice].visible=true;
 		sprite[indice].position.x =planet.position.x;
 		sprite[indice].position.z = planet.position.z;
@@ -661,17 +680,22 @@ var planet = new THREE.Mesh(geometry, material);
 		sprite[indice].scale.set(scale, scale, 1);
 		scene.add(sprite[indice]);
 		//planet.add(sprite);
-		var spritee = makeTextSprite( sphere_price );
-		spritee.position.y=- sphere_size/2;
-		spritee.visible=false;//******************************************************************************** */
-		spritee.position.x = -planet.position.x ;//+(Math.cos(timestamp2 * 20) * orbit);
-		spritee.position.z = -planet.position.z; //+( Math.sin(timestamp2 * 20) * orbit);
-		planet.add(spritee);
+		orbit= 800;
+
+		info_bars[index][jndex]= makeTextSprite( sphere_price );
+		info_bars[index][jndex].position.y=200;
+		info_bars[index][jndex].visible=true;//******************************************************************************** */
+		info_bars[index][jndex].position.x = bars_x * orbit;//planet.position.x +(Math.cos(timestamp2 * 20) * orbit);//;
+		info_bars[index][jndex].position.z =bars_z*orbit;// planet.position.z+( Math.sin(timestamp2 * 20) * orbit); //+( Math.sin(timestamp2 * 20) * orbit);
+		//planet.add(spritee);
 		planet.name=indice;
 		planet.esfera=true;
-		/*info_bars[index][jndex]=planet;
-		info_bars[index][jndex].name=indice;*/
+		
+		//info_bars[index][jndex]=spritee;
+		info_bars[index][jndex].name=indice;
+		
 		//alert(info_bars[index][jndex]);
+		scene.add(info_bars[index][jndex]);
 		planets.push(planet);
 		scene.add(planet);
 	
@@ -691,7 +715,7 @@ function raycast() {
 		
         
 			  if(INTERSECTED != intersects[ 0 ].object){
-				/*info_bars.forEach( function(planet){
+				info_bars.forEach( function(planet){
     
 					
 				
@@ -699,14 +723,14 @@ function raycast() {
 				if(planet==intersects[ 0 ].object)
 					esfera=true;
 					
-				  });*/
+				  });
 				
 					if(INTERSECTED){
-						/*for (let index = 0; index < total; index++) {
+						for (let index = 0; index < total; index++) {
 							planets.forEach( function(planet){
     
 								//if(planet.name==info_bars[x][index].name){
-									planet.children[0].visible=false;
+									//planet.children[0].visible=false;
 									planet.scale.set(1,1, 1);//}
 							
 								
@@ -714,14 +738,14 @@ function raycast() {
 								
 							  });
 							
-						}*/
-						INTERSECTED.children[0].visible=false;
+						}
+						//INTERSECTED.children[0].visible=false;
 						INTERSECTED.scale.set(1,1, 1);
 						
 					}
 				INTERSECTED = intersects[ 0 ].object;
 				
-				/*for (let index = 0; index < info_bars.length; index++) {
+				for (let index = 0; index < info_bars.length; index++) {
 					
 					
 					
@@ -747,7 +771,8 @@ function raycast() {
 		
 							if(planet.name==info_bars[x][index].name){
 								//alert(index);
-								planet.children[0].visible=true;
+								info_bars[x][index].visible=true;
+								//planet.children[0].visible=true;
 								planet.scale.set(1.1, 1.1, 1.1);}
 								planet.shininess=100;
 								planet.skinning=true;
@@ -756,11 +781,11 @@ function raycast() {
 						});
 					}
 					
-				}*/
+				}
 			
 				//INTERSECTED.children[0].position.set(camera.position.x- 400, camera.position.y-400,camera.position.z-INTERSECTED.children[0].position.z-400);
 				INTERSECTED.scale.set(1.1, 1.1, 1.1);
-				INTERSECTED.children[0].visible=true;
+				//INTERSECTED.children[0].visible=true;
 				
 			  }
 			  
@@ -801,7 +826,8 @@ function onMouseMove( event ) {
 }
 
 function exchange_sphere(where_to_start, register_number){
-;
+	 action= true;
+	
 //controls.reset();
 	timestamp=0;
 	radii=0;
@@ -982,22 +1008,28 @@ window.addEventListener("resize", displayWindowSize);
 
 function animate() 
 {
-	raycast();
+	//raycast();
 
   requestAnimationFrame(animate);
-  
-  planets.forEach( function(planet){
-    
-	var scaleFactor = 9;
-	var sprite = planet.children[0];
-	
-	var scale = scaleVector.subVectors(planet.position, camera.position).length() / scaleFactor;
-	sprite.scale.set(scale*2, scale*2, 1);
-	
-	
-	
-	
-  });
+  if(action){
+	for(let kndex=0 ; kndex < info_bars.length; kndex++)
+	{
+		for(let index=0 ; index < info[0].length-1; index++)
+		{
+		
+		
+			var scaleFactor = 9;
+			//var sprite = planet.children[0];
+			
+			var scale = scaleVector.subVectors(info_bars[kndex][index].position, camera.position).length() / scaleFactor;
+			info_bars[kndex][index].scale.set(scale*2, scale*2, 1);
+			
+		}
+			
+			
+		
+	}
+  }
   render();
   renderer.render(scene, camera);
   controls.update();
