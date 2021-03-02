@@ -101,6 +101,7 @@ var camera_position_z;
 var Sumarry; 
 var mat= [];
 var action= false;
+var x;var y;
 function init() 
 {
 	
@@ -379,8 +380,7 @@ function movement(direction, speed){
 	  	cameraControls.truck(speed*delta*moveX,0,true);
   	}
   	
-}
-
+}/*
 function makeTextSprite( message, parameters )
 {
 	if ( parameters === undefined ) parameters = {};
@@ -439,6 +439,79 @@ function makeTextSprite( message, parameters )
 	  
 	var sprite = new THREE.Sprite( spriteMaterial );
 	sprite.scale.set(100,50,1);
+	
+	return sprite;	
+}*/
+function makeTextSprite( message, parameters )
+{
+	if ( parameters === undefined ) parameters = {};
+	
+	var fontface = parameters.hasOwnProperty("fontface") ? 
+		parameters["fontface"] : "Arial";
+	
+	var fontsize = parameters.hasOwnProperty("fontsize") ? 
+		parameters["fontsize"] : 18;
+	
+	var borderThickness = parameters.hasOwnProperty("borderThickness") ? 
+		parameters["borderThickness"] : 4;
+	
+	var borderColor = parameters.hasOwnProperty("borderColor") ?
+		parameters["borderColor"] : { r:0, g:0, b:0, a:1.0 };
+	
+	var backgroundColor = parameters.hasOwnProperty("backgroundColor") ?
+		parameters["backgroundColor"] : { r:255, g:255, b:255, a:1.0 };
+
+//	var spriteAlignment = THREE.SpriteAlignment.topLeft;
+		
+	var canvas = document.createElement('canvas');
+	var context = canvas.getContext('2d');
+	context.font = "Bold " + fontsize + "px " + fontface;
+    
+	// get size data (height depends only on font size)
+	var metrics = context.measureText( message );
+	//canvas.width = 256;
+	//canvas.height = 256;
+	var textWidth = metrics.width;
+	// background color
+	context.fillStyle   = "rgba(" + backgroundColor.r + "," + backgroundColor.g + ","
+								  + backgroundColor.b + "," + backgroundColor.a + ")";
+	// border color
+	context.strokeStyle = "rgba(" + borderColor.r + "," + borderColor.g + ","
+								  + borderColor.b + "," + borderColor.a + ")";
+
+	context.lineWidth = borderThickness;
+	//context.moveTo( 128, 44);
+	roundRect(context, 128/2,44/2, textWidth + borderThickness, fontsize * 1.4 + borderThickness, 2);
+	// 1.4 is extra height factor for text below baseline: g,j,p,q.
+	/*
+	var canvas = document.createElement('canvas');
+	canvas.width = 256;
+	canvas.height = 256;
+	var ctx = canvas.getContext("2d");
+	
+	
+	ctx.font = "38pt Arial";
+	
+	ctx.textAlign = "center";
+	ctx.fillText( sphere_price, 128, 44);*/
+	// text color
+	context.fillStyle = "rgba(0, 0, 0, 1.0)";
+
+	context.fillText( message, 64, 44);
+	//context.moveTo(0, 0);
+	context.textAlign = "right";
+	// canvas contents will be used for a texture
+	var texture = new THREE.Texture(canvas) 
+	texture.needsUpdate = true;
+
+	var spriteMaterial = new THREE.SpriteMaterial( 
+		{ map: texture } );
+		//spriteMaterial.sizeAttenuation = false;
+		//material.transparent = true;
+		spriteMaterial.map.minFilter = THREE.NearestFilter;
+	  
+	var sprite = new THREE.Sprite( spriteMaterial );
+	//sprite.scale.set(100,50,1);
 	
 	return sprite;	
 }
@@ -560,7 +633,7 @@ planet.userData.orbit = orbit;
 planet.userData.speed = sphere_size;
 
 
-		var canvas = document.createElement('canvas');
+		/*var canvas = document.createElement('canvas');
 		canvas.width = 256;
 		canvas.height = 256;
 		var ctx = canvas.getContext("2d");
@@ -575,19 +648,19 @@ planet.userData.speed = sphere_size;
 		tex.needsUpdate = true;
 		var spriteMat = new THREE.SpriteMaterial({
 		  map: tex
-		});
-		sprite_2[index] =makeTextSprite(  sphere_price );// new THREE.Sprite(spriteMat);
-		sprite_2[index].position.x =planet.position.x;
-		sprite_2[index].position.z = planet.position.z;
+		});*/
+		sprite_2[index] =makeTextSprite(  sphere_price, { fontsize: 24});// new THREE.Sprite(spriteMat);
+		//sprite_2[index].position.x =planet.position.x;
+		//sprite_2[index].position.z = planet.position.z;
 		var scaleFactor = 9;
 		var scale = scaleVector.subVectors(planet.position, camera.position).length() / scaleFactor;
 		sprite_2[index].scale.set(scale, scale, 1);
-		sprite_2[index].position.y= 400;
-		scene.add(sprite_2[index]);
+		sprite_2[index].position.y= 200;
+		planet.add(sprite_2[index]);
 
 
 
-		info_bars[index] = makeTextSprite(  sphere_cant );
+		info_bars[index] = makeTextSprite(  sphere_cant , { fontsize: 16});
 		info_bars[index].position.x = bars_x ;
 		info_bars[index].position.z = bars_z;
 	
@@ -596,9 +669,9 @@ planet.userData.speed = sphere_size;
 		planet.name=sphere_cant;
 		planet.esfera=false;
 		info_bars[index] [0]= makeTextSprite(  sphere_cant );
-		info_bars[index][0].visible=true;
+		info_bars[index][0].visible=false;
 		info_bars[index][0].position.x = bars_x * 800;
-		info_bars[index][0].position.y = 200;
+		info_bars[index][0].position.y = 300;
 		info_bars[index][0].position.z = bars_z*800;
 		info_bars[index][0].name=sphere_cant;
 		
@@ -653,7 +726,7 @@ var planet = new THREE.Mesh(geometry, material);
 		planet.userData.orbit = orbit;
 		planet.userData.speed = sphere_size;
 	
-		var canvas = document.createElement('canvas');
+		/*var canvas = document.createElement('canvas');
 		canvas.width = 256;
 		canvas.height = 256;
 		var ctx = canvas.getContext("2d");
@@ -668,23 +741,25 @@ var planet = new THREE.Mesh(geometry, material);
 		tex.needsUpdate = true;
 		var spriteMat = new THREE.SpriteMaterial({
 		  map: tex
-		});
+		});*/
 		
-		sprite[indice] = makeTextSprite(  sphere_name ); //new THREE.Sprite(spriteMat);
+		sprite[indice] = makeTextSprite(  sphere_name , { fontsize: 18}); //new THREE.Sprite(spriteMat);
 		sprite[indice].visible=true;
-		sprite[indice].position.x =planet.position.x;
-		sprite[indice].position.z = planet.position.z;
-		
+		//sprite[indice].position.x =planet.position.x;
+		//sprite[indice].position.z = planet.position.z;
+		sprite[indice].position.x =-50;
+		sprite[indice].position.z = 100;
+		sprite[indice].position.y = -sphere_size/3;
 		var scaleFactor = 9;
 		var scale = scaleVector.subVectors(planet.position, camera.position).length() / scaleFactor;
 		sprite[indice].scale.set(scale, scale, 1);
-		scene.add(sprite[indice]);
+		planet.add(sprite[indice]);
 		//planet.add(sprite);
 		orbit= 800;
 
-		info_bars[index][jndex]= makeTextSprite( sphere_price );
-		info_bars[index][jndex].position.y=200;
-		info_bars[index][jndex].visible=true;//******************************************************************************** */
+		info_bars[index][jndex]= makeTextSprite( sphere_price, { fontsize: 16} );
+		info_bars[index][jndex].position.y=300;
+		info_bars[index][jndex].visible=false;//******************************************************************************** */
 		info_bars[index][jndex].position.x = bars_x * orbit;//planet.position.x +(Math.cos(timestamp2 * 20) * orbit);//;
 		info_bars[index][jndex].position.z =bars_z*orbit;// planet.position.z+( Math.sin(timestamp2 * 20) * orbit); //+( Math.sin(timestamp2 * 20) * orbit);
 		//planet.add(spritee);
@@ -709,13 +784,13 @@ function raycast() {
 	
   var intersects = raycaster.intersectObjects(planets );
   var esfera=true;
-  var x=0;var total;
   
+  //alert(x);
 		  if ( intersects.length > 0 ) {
 		
         
 			  if(INTERSECTED != intersects[ 0 ].object){
-				info_bars.forEach( function(planet){
+				/*info_bars.forEach( function(planet){
     
 					
 				
@@ -723,14 +798,14 @@ function raycast() {
 				if(planet==intersects[ 0 ].object)
 					esfera=true;
 					
-				  });
+				  });*/
 				
 					if(INTERSECTED){
-						for (let index = 0; index < total; index++) {
+						/*for (let index = 0; index < total; index++) {
 							planets.forEach( function(planet){
     
 								//if(planet.name==info_bars[x][index].name){
-									//planet.children[0].visible=false;
+									planet.children[0].visible=false;
 									planet.scale.set(1,1, 1);//}
 							
 								
@@ -738,14 +813,14 @@ function raycast() {
 								
 							  });
 							
-						}
-						//INTERSECTED.children[0].visible=false;
+						}*/
+						info_bars[x][y].visible=false;
 						INTERSECTED.scale.set(1,1, 1);
 						
 					}
 				INTERSECTED = intersects[ 0 ].object;
 				
-				for (let index = 0; index < info_bars.length; index++) {
+				/*for (let index = 0; index < info_bars.length; index++) {
 					
 					
 					
@@ -771,8 +846,7 @@ function raycast() {
 		
 							if(planet.name==info_bars[x][index].name){
 								//alert(index);
-								info_bars[x][index].visible=true;
-								//planet.children[0].visible=true;
+								planet.children[0].visible=true;
 								planet.scale.set(1.1, 1.1, 1.1);}
 								planet.shininess=100;
 								planet.skinning=true;
@@ -781,11 +855,28 @@ function raycast() {
 						});
 					}
 					
-				}
+				}*/
 			
 				//INTERSECTED.children[0].position.set(camera.position.x- 400, camera.position.y-400,camera.position.z-INTERSECTED.children[0].position.z-400);
-				INTERSECTED.scale.set(1.1, 1.1, 1.1);
-				//INTERSECTED.children[0].visible=true;
+				for(let kndex=0 ; kndex < info_bars.length; kndex++)
+				{
+					for(let index=0 ; index < info[0].length-1; index++)
+					{
+						if(INTERSECTED.name==info_bars[kndex][index].name)
+						{INTERSECTED.scale.set(1.1, 1.1, 1.1);
+							info_bars[kndex][index].visible=true;
+							x=kndex;y=index;
+						}
+							
+						
+							
+					}
+						
+						
+					
+				}
+				
+				
 				
 			  }
 			  
@@ -806,7 +897,7 @@ function raycast() {
 					  });
 					 // alert(index);alert(x);
 				//}*/
-				INTERSECTED.children[0].visible=false;
+				info_bars[x][y].visible=false;
 				INTERSECTED.scale.set(1,1, 1);
 			}
 			INTERSECTED=null;
@@ -1008,7 +1099,7 @@ window.addEventListener("resize", displayWindowSize);
 
 function animate() 
 {
-	//raycast();
+	raycast();
 
   requestAnimationFrame(animate);
   if(action){
