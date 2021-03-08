@@ -38,7 +38,7 @@ const clock = new THREE.Clock();
  // Optional: Pre-fetch Draco WASM/JS module.
 // dracoLoader.preload();
 //Scene and render
-var renderer, scene, bgScene, camera;
+var renderer, scene, scene2, bgScene, camera;
 renderer = new THREE.WebGLRenderer({ canvas , antialias: true});
 const cameraControls = new CameraControls( activeCamera, renderer.domElement );
 cameraControls.setLookAt( 200000, 200000, 200000, 0.0001, 2, 0, false );
@@ -129,6 +129,7 @@ function init()
 	
 	
 	scene = new THREE.Scene();
+	scene2= new THREE.Scene();
     // scene.fog = new THREE.Fog( 0x443333, 1, 4 );
  
        var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
@@ -140,7 +141,7 @@ function init()
 	//Lights
 	//spotLight = new THREE.SpotLight( 0xffff00 );
 	light = new THREE.AmbientLight( obj.color0 ); // soft white light
-	hemisLight = new THREE.HemisphereLight( obj.color0, obj.colorg,0.1);
+	hemisLight = new THREE.HemisphereLight( obj.color0, obj.colorg,4);
 	
 
 	stats = new Stats();
@@ -208,7 +209,7 @@ function main() {
 	renderer.outputEncoding = THREE.sRGBEncoding;
 	
     renderer.gammaFactor = 2.2;
-  
+	renderer.autoClear = false;
 	
 	//Camera
 	camera.position.x = 3000;
@@ -234,16 +235,16 @@ function main() {
 		colors[11]="turquoise";
 
 	for (let index = 1; index < 12; index++) {
-		colors_array_1[index]=  Math.random() * "0xFFFFFF";
-		colors_array_2[index]= colors[index];
 		
+		colors_array_2[index]= colors[index];
+		colors_array_1[index]= colors_array_2[index];
 	}
 	 
 	 //create video
 	
 	 
 	 
-        var floorTexture = new THREE.TextureLoader().load( '../client/js/images/checkerboard.jpg' )
+        var floorTexture = new THREE.TextureLoader().load( '../client/js/images/snow-512.jpg' )
 	floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping; 
 	floorTexture.repeat.set( 10, 10 );
 	
@@ -265,7 +266,7 @@ function main() {
 
 	addGUI();
 
-     
+	addSkybox(0,false);
 
 const rotationSpace = new THREE.Object3D();
 
@@ -442,7 +443,7 @@ function makeTextSprite( message, parameters )
 	
 	return sprite;	
 }*/
-function makeTextSprite( message, parameters )
+function makeTextSprite( message, parameters,index, esfera )
 {
 	if ( parameters === undefined ) parameters = {};
 	
@@ -459,7 +460,7 @@ function makeTextSprite( message, parameters )
 		parameters["borderColor"] : { r:0, g:0, b:0, a:1.0 };
 	
 	var backgroundColor = parameters.hasOwnProperty("backgroundColor") ?
-		parameters["backgroundColor"] : { r:255, g:255, b:255, a:1.0 };
+		parameters["backgroundColor"] : "black";
 
 //	var spriteAlignment = THREE.SpriteAlignment.topLeft;
 		
@@ -473,8 +474,10 @@ function makeTextSprite( message, parameters )
 	//canvas.height = 256;
 	var textWidth = metrics.width;
 	// background color
-	context.fillStyle   = "rgba(" + backgroundColor.r + "," + backgroundColor.g + ","
-								  + backgroundColor.b + "," + backgroundColor.a + ")";
+if (esfera){context.fillStyle   =colors_array_2[index]; /* "rgba(" + backgroundColor.r + "," + backgroundColor.g + ","
++ backgroundColor.b + "," + backgroundColor.a + ")";*/}else {context.fillStyle   =colors_array_2[index];}
+	
+
 	// border color
 	context.strokeStyle = "rgba(" + borderColor.r + "," + borderColor.g + ","
 								  + borderColor.b + "," + borderColor.a + ")";
@@ -495,7 +498,7 @@ function makeTextSprite( message, parameters )
 	ctx.textAlign = "center";
 	ctx.fillText( sphere_price, 128, 44);*/
 	// text color
-	context.fillStyle = "rgba(0, 0, 0, 1.0)";
+	context.fillStyle = "white";
 
 	context.fillText( message, 64, 44);
 	//context.moveTo(0, 0);
@@ -649,7 +652,7 @@ planet.userData.speed = sphere_size;
 		var spriteMat = new THREE.SpriteMaterial({
 		  map: tex
 		});*/
-		sprite_2[index] =makeTextSprite(  sphere_price, { fontsize: 24});// new THREE.Sprite(spriteMat);
+		sprite_2[index] =makeTextSprite(  sphere_price, { fontsize: 24},index,true );// new THREE.Sprite(spriteMat);
 		//sprite_2[index].position.x =planet.position.x;
 		//sprite_2[index].position.z = planet.position.z;
 		var scaleFactor = 9;
@@ -660,23 +663,24 @@ planet.userData.speed = sphere_size;
 
 
 
-		info_bars[index] = makeTextSprite(  sphere_cant , { fontsize: 16});
-		info_bars[index].position.x = bars_x ;
-		info_bars[index].position.z = bars_z;
+		info_bars[index] = makeTextSprite(  sphere_cant , { fontsize: 16},index,true  );
+		info_bars[index].position.x = planet_x ;
+		info_bars[index].position.z = planet_z;
 	
 	//******************************************************************************** */
 	//planet.add(spritee);
 		planet.name=sphere_cant;
 		planet.esfera=false;
-		info_bars[index] [0]= makeTextSprite(  sphere_cant );
+		info_bars[index] [0]= makeTextSprite(  sphere_cant , { fontsize: 16},index,true );
 		info_bars[index][0].visible=false;
-		info_bars[index][0].position.x = bars_x * 800;
-		info_bars[index][0].position.y = 300;
-		info_bars[index][0].position.z = bars_z*800;
+		info_bars[index][0].position.x =planet_x;
+		info_bars[index][0].position.y =planet.position.y+sprite_2[index].position.y;
+		info_bars[index][0].position.z = planet_z;
 		info_bars[index][0].name=sphere_cant;
-		
+		info_bars[index][0].scale.set(scale, scale, 1);
 		//alert(info_bars[index][jndex]);
 		scene.add(info_bars[index][0]);
+		scene2.add(info_bars[index][0]);
 		planets.push(planet);
 		scene.add(planet);
 		timestamp++;
@@ -743,26 +747,30 @@ var planet = new THREE.Mesh(geometry, material);
 		  map: tex
 		});*/
 		
-		sprite[indice] = makeTextSprite(  sphere_name , { fontsize: 18}); //new THREE.Sprite(spriteMat);
+		sprite[indice] = makeTextSprite(  sphere_name , { fontsize: 18},jndex,false ); //new THREE.Sprite(spriteMat);
 		sprite[indice].visible=true;
 		//sprite[indice].position.x =planet.position.x;
 		//sprite[indice].position.z = planet.position.z;
-		sprite[indice].position.x =-50;
-		sprite[indice].position.z = 100;
+		//sprite[indice].position.x =-50;
+		//sprite[indice].position.z = 100;
 		sprite[indice].position.y = -sphere_size/3;
 		var scaleFactor = 9;
 		var scale = scaleVector.subVectors(planet.position, camera.position).length() / scaleFactor;
 		sprite[indice].scale.set(scale, scale, 1);
 		planet.add(sprite[indice]);
 		//planet.add(sprite);
-		orbit= 800;
+		//orbit= 800;
 
-		info_bars[index][jndex]= makeTextSprite( sphere_price, { fontsize: 16} );
-		info_bars[index][jndex].position.y=300;
+		info_bars[index][jndex]= makeTextSprite( sphere_price, { fontsize: 18},jndex,false  );
+		//info_bars[index][jndex].position.y=300;
+		//info_bars[index][jndex].position.x =-50;
+		//info_bars[index][jndex].position.z = 100;
+		info_bars[index][jndex].position.y = sprite[indice].position.y +planet.position.y;
 		info_bars[index][jndex].visible=false;//******************************************************************************** */
-		info_bars[index][jndex].position.x = bars_x * orbit;//planet.position.x +(Math.cos(timestamp2 * 20) * orbit);//;
-		info_bars[index][jndex].position.z =bars_z*orbit;// planet.position.z+( Math.sin(timestamp2 * 20) * orbit); //+( Math.sin(timestamp2 * 20) * orbit);
-		//planet.add(spritee);
+		info_bars[index][jndex].position.x = planet.position.x;// +(Math.cos(timestamp2 * 20) * orbit);//;
+		info_bars[index][jndex].position.z =planet.position.z;//+( Math.sin(timestamp2 * 20) * orbit); //+( Math.sin(timestamp2 * 20) * orbit);
+		info_bars[index][jndex].scale.set(scale, scale, 1);
+		//planet.add(info_bars[index][jndex]);
 		planet.name=indice;
 		planet.esfera=true;
 		
@@ -771,6 +779,7 @@ var planet = new THREE.Mesh(geometry, material);
 		
 		//alert(info_bars[index][jndex]);
 		scene.add(info_bars[index][jndex]);
+		scene2.add(info_bars[index][jndex]);
 		planets.push(planet);
 		scene.add(planet);
 	
@@ -805,7 +814,7 @@ function raycast() {
 							planets.forEach( function(planet){
     
 								//if(planet.name==info_bars[x][index].name){
-									planet.children[0].visible=false;
+									
 									planet.scale.set(1,1, 1);//}
 							
 								
@@ -814,6 +823,7 @@ function raycast() {
 							  });
 							
 						}*/
+						INTERSECTED.children[0].visible=true;
 						info_bars[x][y].visible=false;
 						INTERSECTED.scale.set(1,1, 1);
 						
@@ -864,6 +874,7 @@ function raycast() {
 					{
 						if(INTERSECTED.name==info_bars[kndex][index].name)
 						{INTERSECTED.scale.set(1.1, 1.1, 1.1);
+							INTERSECTED.children[0].visible=false;
 							info_bars[kndex][index].visible=true;
 							x=kndex;y=index;
 						}
@@ -897,6 +908,7 @@ function raycast() {
 					  });
 					 // alert(index);alert(x);
 				//}*/
+				INTERSECTED.children[0].visible=true;
 				info_bars[x][y].visible=false;
 				INTERSECTED.scale.set(1,1, 1);
 			}
@@ -1122,7 +1134,10 @@ function animate()
 	}
   }
   render();
-  renderer.render(scene, camera);
+  renderer.clear();                     // clear buffers
+renderer.render( scene, camera );     // render scene 1
+renderer.clearDepth();                // clear depth buffer
+renderer.render( scene2, camera );    // render scene 2
   controls.update();
   stats.update();
   var dt = clock.getDelta();
@@ -1130,6 +1145,70 @@ function animate()
 }
 
 
+function addSkybox(num,	isnotfirsttime){//Create animated sky
+
+	for (let index = 0; index < 3; index++) {
+		video[index]= document.createElement('video');
+		video[index].load();
+		video[index].autoplay= true;
+		video[index].needsUpdate= true;
+		video[index].loop	= true;
+	   
+	}
+	var texture;
+	
+	//choose the video
+	if (num== 0){
+		video[2].src	= "../client/js/images/stars.mp4";
+		video[0].src	= "../client/js/images/stars.mp4";
+		video[0].autoplay= true;	
+		video[2].autoplay= true;
+		 texture = new THREE.VideoTexture( video[0] );
+	} 
+	if (num== 1){
+		video[1].autoplay= true;
+		video[2].autoplay= true;
+		video[2].src	= "../client/js/images/stars.mp4"; 
+		video[1].src	= "../client/js/images/stars.mp4";
+		 texture = new THREE.VideoTexture( video[1] );
+	} 
+	if (num==2){
+		video[2].autoplay= true;
+		video[2].src	= "../client/js/images/stars.mp4";
+		 texture = new THREE.VideoTexture( video[2] );
+		 
+	} 
+	
+	
+	
+	
+
+    var skyGeo;
+    //add sphere
+	skyGeo=	new THREE.SphereGeometry( 9000, 900, 900 );
+	
+	//adding the video to the sphere
+ 	//var material = new THREE.MeshBasicMaterial({ map: texture,});
+     materiall = new THREE.MeshStandardMaterial( {
+
+    //color: 0xffffff,
+
+    roughness: 1,
+    metalness: 1,
+    map: texture,
+
+	} );
+	if (isnotfirsttime){
+		scene.remove( Skybox );
+	}
+	
+	 Skybox = new THREE.Mesh(skyGeo, materiall);
+	// put the video both sides of the sphere
+	Skybox.material.side = THREE.DoubleSide;
+	//Skybox.Side = THREE.DoubleSide;
+	//add sky
+	scene.add(Skybox);
+}
 function render() 
 {
 	renderer.domElement.addEventListener( 'mousemove', onMouseMove );
