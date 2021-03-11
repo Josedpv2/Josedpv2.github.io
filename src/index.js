@@ -761,7 +761,7 @@ var planet = new THREE.Mesh(geometry, material);
 		//sprite[indice].position.z = planet.position.z;
 		//sprite[indice].position.x =-50;
 		//sprite[indice].position.z = 100;
-		sprite[indice].position.y = -sphere_size/3;
+		sprite[indice].position.y = -sphere_size/2;
 		var scaleFactor = 9;
 		var scale = scaleVector.subVectors(planet.position, camera.position).length() / scaleFactor;
 		sprite[indice].scale.set(scale, scale, 1);
@@ -770,10 +770,10 @@ var planet = new THREE.Mesh(geometry, material);
 		//orbit= 800;
 
 		info_bars[index][jndex]= makeTextSprite( sphere_price, { fontsize: 18},jndex,false  );
-		//info_bars[index][jndex].position.y=300;
+		info_bars[index][jndex].position.y=0;
 		//info_bars[index][jndex].position.x =-50;
 		//info_bars[index][jndex].position.z = 100;
-		info_bars[index][jndex].position.y = sprite[indice].position.y +planet.position.y;
+		//info_bars[index][jndex].position.y = planet.position.y;
 		info_bars[index][jndex].visible=false;//******************************************************************************** */
 		info_bars[index][jndex].position.x = planet.position.x;// +(Math.cos(timestamp2 * 20) * orbit);//;
 		info_bars[index][jndex].position.z =planet.position.z;//+( Math.sin(timestamp2 * 20) * orbit); //+( Math.sin(timestamp2 * 20) * orbit);
