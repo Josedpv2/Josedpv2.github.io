@@ -141,7 +141,7 @@ function init()
 	//Lights
 	//spotLight = new THREE.SpotLight( 0xffff00 );
 	light = new THREE.AmbientLight( obj.color0 ); // soft white light
-	hemisLight = new THREE.HemisphereLight( obj.color0, obj.colorg,0.5);
+	hemisLight = new THREE.HemisphereLight( obj.color0, obj.colorg,0);
 	
 
 	stats = new Stats();
@@ -503,11 +503,15 @@ if (esfera){context.fillStyle   =colors_array_2[index]; /* "rgba(" + backgroundC
 	ctx.textAlign = "center";
 	ctx.fillText( sphere_price, 128, 44);*/
 	// text color
+	context.strokeText( message, 66, 44);
 	context.strokeStyle = "black";
 
 	context.lineWidth = borderThickness;
 	context.fillStyle = "white";
 	//context.textAlign = "right";
+	//  fillText
+	
+	
 	context.fillText( message, 66, 44);
 	//context.moveTo(0, 0);
 	
@@ -1030,8 +1034,9 @@ function exchange_sphere(where_to_start, register_number){
 						regex = $ ;
 						sphere_size= sphere_size.replace(regex, '') ;
 						//console.log(info[index][jndex]);
-						
-						createwrittensphere2( info[index][jndex], sphere_size/200000, 400,mat[jndex],info[nombres][jndex],number,indexx,jndex);
+						sphere_size=sphere_size/200000;
+						if(sphere_size>3500){sphere_size=3500;}
+						createwrittensphere2( info[index][jndex], sphere_size, 400,mat[jndex],info[nombres][jndex],number,indexx,jndex);
 						
 						number++;
 							
