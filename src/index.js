@@ -469,7 +469,7 @@ function makeTextSprite( message, parameters,index, esfera )
 	var canvas = document.createElement('canvas');
 	var context = canvas.getContext('2d');
 	context.font =  fontsize + "px " + fontface;
-    context.shadowColor.italics();
+    
 	// get size data (height depends only on font size)
 	var metrics = context.measureText( message );
 	
@@ -503,15 +503,18 @@ if (esfera){context.fillStyle   =colors_array_2[index]; /* "rgba(" + backgroundC
 	ctx.textAlign = "center";
 	ctx.fillText( sphere_price, 128, 44);*/
 	// text color
-	context.strokeText( message, 66, 44);
-	context.strokeStyle = "black";
+	//context.lineWidth = 4;
+	//context.strokeStyle = "black";
+	//context.strokeText( message, 66, 44);
+	
 
-	context.lineWidth = borderThickness;
+	context.lineWidth = 4;
 	context.fillStyle = "white";
 	//context.textAlign = "right";
 	//  fillText
 	
-	
+	//context.shadowColor.italics();
+	//context.shadowColor="black";
 	context.fillText( message, 66, 44);
 	//context.moveTo(0, 0);
 	
@@ -1035,7 +1038,7 @@ function exchange_sphere(where_to_start, register_number){
 						sphere_size= sphere_size.replace(regex, '') ;
 						//console.log(info[index][jndex]);
 						sphere_size=sphere_size/200000;
-						if(sphere_size>3500){sphere_size=3500;}
+						//if(sphere_size>3500){sphere_size=3500;}
 						createwrittensphere2( info[index][jndex], sphere_size, 400,mat[jndex],info[nombres][jndex],number,indexx,jndex);
 						
 						number++;
