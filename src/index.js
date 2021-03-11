@@ -949,8 +949,9 @@ function exchange_sphere(where_to_start, register_number){
 		var spacedPoints = shape.createSpacedPointsGeometry(128);
 		spacedPoints.rotateX(THREE.Math.degToRad(-90));
 		 orbit [0]= new THREE.Line(spacedPoints, new THREE.LineBasicMaterial({
-		  color: "yellow"
+		  //color: "yellow"
 		}));
+		orbit [0].visible=false;
 		scene.add(orbit [0]);
 	var index = where_to_start+2;//indice
 	var nombres= where_to_start+1;//nombres de las monedas
@@ -1014,8 +1015,8 @@ function exchange_sphere(where_to_start, register_number){
 		var spacedPoints = shape.createSpacedPointsGeometry(128);
 		spacedPoints.rotateX(THREE.Math.degToRad(90));
 		 orbit [indexx]= new THREE.Line(spacedPoints, new THREE.LineBasicMaterial({
-		  color: "yellow"
-		}));
+		 // color: "yellow"
+		}));//orbit [indexx].visible=false;
 		 scene.add(orbit[indexx]);
 		  
 
