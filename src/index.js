@@ -130,7 +130,7 @@ function init()
 	
 	scene = new THREE.Scene();
 	scene2= new THREE.Scene();
-    // scene.fog = new THREE.Fog( 0x443333, 1, 4 );
+    //scene.fog = new THREE.Fog( 0x443333, 1, 4 );
  
        var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
 	var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 2, FAR = 200000;
@@ -141,7 +141,7 @@ function init()
 	//Lights
 	//spotLight = new THREE.SpotLight( 0xffff00 );
 	light = new THREE.AmbientLight( obj.color0 ); // soft white light
-	hemisLight = new THREE.HemisphereLight( obj.color0, obj.colorg,4);
+	hemisLight = new THREE.HemisphereLight( obj.color0, obj.colorg,0.5);
 	
 
 	stats = new Stats();
@@ -244,7 +244,7 @@ function main() {
 	
 	 
 	 
-        var floorTexture = new THREE.TextureLoader().load( '../client/js/images/snow-512.jpg' )
+        var floorTexture = new THREE.TextureLoader().load( '../client/js/images/lava.jpg' )
 	floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping; 
 	floorTexture.repeat.set( 10, 10 );
 	
@@ -274,6 +274,8 @@ const rotationSpace = new THREE.Object3D();
 	addGUIChooseDate ();
 	document.addEventListener( 'keydown', onKeyDown, false );
 	document.addEventListener( 'keyup', onKeyUp, false );
+	video[0].play();
+	video[0].muted=true;
 }
 
 function addGUIChooseDate (){
@@ -466,12 +468,15 @@ function makeTextSprite( message, parameters,index, esfera )
 		
 	var canvas = document.createElement('canvas');
 	var context = canvas.getContext('2d');
-	context.font = "Bold " + fontsize + "px " + fontface;
-    
+	context.font =  fontsize + "px " + fontface;
+    context.shadowColor.italics();
 	// get size data (height depends only on font size)
 	var metrics = context.measureText( message );
-	//canvas.width = 256;
-	//canvas.height = 256;
+	
+	//canvas.width = 128;
+	//canvas.height = 44;
+	//metrics.height=metrics.height/10;
+	
 	var textWidth = metrics.width;
 	// background color
 if (esfera){context.fillStyle   =colors_array_2[index]; /* "rgba(" + backgroundColor.r + "," + backgroundColor.g + ","
@@ -484,7 +489,7 @@ if (esfera){context.fillStyle   =colors_array_2[index]; /* "rgba(" + backgroundC
 
 	context.lineWidth = borderThickness;
 	//context.moveTo( 128, 44);
-	roundRect(context, 128/2,44/2, textWidth + borderThickness, fontsize * 1.4 + borderThickness, 2);
+	roundRect(context, 128/2,44/2, textWidth + borderThickness, fontsize * 1.4 + borderThickness, 6);
 	// 1.4 is extra height factor for text below baseline: g,j,p,q.
 	/*
 	var canvas = document.createElement('canvas');
@@ -498,18 +503,21 @@ if (esfera){context.fillStyle   =colors_array_2[index]; /* "rgba(" + backgroundC
 	ctx.textAlign = "center";
 	ctx.fillText( sphere_price, 128, 44);*/
 	// text color
-	context.fillStyle = "white";
+	context.strokeStyle = "black";
 
-	context.fillText( message, 64, 44);
+	context.lineWidth = borderThickness;
+	context.fillStyle = "white";
+	//context.textAlign = "right";
+	context.fillText( message, 66, 44);
 	//context.moveTo(0, 0);
-	context.textAlign = "right";
+	
 	// canvas contents will be used for a texture
 	var texture = new THREE.Texture(canvas) 
 	texture.needsUpdate = true;
 
 	var spriteMaterial = new THREE.SpriteMaterial( 
 		{ map: texture } );
-		//spriteMaterial.sizeAttenuation = false;
+		spriteMaterial.sizeAttenuation = true;
 		//material.transparent = true;
 		spriteMaterial.map.minFilter = THREE.NearestFilter;
 	  
@@ -671,7 +679,7 @@ planet.userData.speed = sphere_size;
 	//planet.add(spritee);
 		planet.name=sphere_cant;
 		planet.esfera=false;
-		info_bars[index] [0]= makeTextSprite(  sphere_cant , { fontsize: 16},index,true );
+		info_bars[index] [0]= makeTextSprite(  sphere_cant , { fontsize: 18},index,true );
 		info_bars[index][0].visible=false;
 		info_bars[index][0].position.x =planet_x;
 		info_bars[index][0].position.y =planet.position.y+sprite_2[index].position.y;
@@ -979,14 +987,15 @@ function exchange_sphere(where_to_start, register_number){
 						var $='$';
 						regex = $ ;
 						sphere_size= sphere_size.replace(regex, '') ;
-						
+						//alert( info[index][ info[0].length-1]);
 						for (let indexxx=1 ; indexxx < 12; indexxx++) {
-		
+							//alert( sphere_size);
 							sphere_size=sphere_size/10;
-							
+							//alert( sphere_size);
 							if (sphere_size<10){
 							
 								sphere_size=(indexxx-1)*20;
+								
 								indexxx=12;
 							}
 					
@@ -1084,6 +1093,8 @@ function Start_Sphere(where_to_start, register_number)
 	 
 	 //info_bars= [[]];
 	 planets = [];
+	 video[0].play();
+	 video[0].muted=true;
 	exchange_sphere(where_to_start, register_number);
  	
 	
@@ -1147,37 +1158,37 @@ renderer.render( scene2, camera );    // render scene 2
 
 function addSkybox(num,	isnotfirsttime){//Create animated sky
 
-	for (let index = 0; index < 3; index++) {
-		video[index]= document.createElement('video');
-		video[index].load();
-		video[index].autoplay= true;
-		video[index].needsUpdate= true;
-		video[index].loop	= true;
+	//for (let index = 0; index < 3; index++) {
+		video[0]= document.createElement('video');
+		video[0].load();
+		video[0].autoplay= true;
+		video[0].needsUpdate= true;
+		video[0].loop	= true;
 	   
-	}
+//	}
 	var texture;
 	
 	//choose the video
 	if (num== 0){
-		video[2].src	= "../client/js/images/stars.mp4";
+		//video[2].src	= "../client/js/images/estrella1.mp4";
 		video[0].src	= "../client/js/images/stars.mp4";
 		video[0].autoplay= true;	
-		video[2].autoplay= true;
+		//video[2].autoplay= true;
 		 texture = new THREE.VideoTexture( video[0] );
-	} 
+	} /*
 	if (num== 1){
 		video[1].autoplay= true;
 		video[2].autoplay= true;
-		video[2].src	= "../client/js/images/stars.mp4"; 
-		video[1].src	= "../client/js/images/stars.mp4";
+		video[2].src	= "../client/js/images/estrella1.mp4"; 
+		video[1].src	= "../client/js/images/estrella1.mp4";
 		 texture = new THREE.VideoTexture( video[1] );
 	} 
 	if (num==2){
 		video[2].autoplay= true;
-		video[2].src	= "../client/js/images/stars.mp4";
+		video[2].src	= "../client/js/images/estrella1.mp4";
 		 texture = new THREE.VideoTexture( video[2] );
 		 
-	} 
+	} */
 	
 	
 	
@@ -1185,7 +1196,7 @@ function addSkybox(num,	isnotfirsttime){//Create animated sky
 
     var skyGeo;
     //add sphere
-	skyGeo=	new THREE.SphereGeometry( 9000, 900, 900 );
+	skyGeo=	new THREE.SphereGeometry( 100000, 120, 120 );
 	
 	//adding the video to the sphere
  	//var material = new THREE.MeshBasicMaterial({ map: texture,});
