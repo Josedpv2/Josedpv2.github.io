@@ -469,7 +469,8 @@ function makeTextSprite( message, parameters,index, esfera )
 	var canvas = document.createElement('canvas');
 	var context = canvas.getContext('2d');
 	context.font =  fontsize + "px " + fontface;
-    
+    context.imageSmoothingEnabled=true;
+	context.canvas.hidden=true;
 	// get size data (height depends only on font size)
 	var metrics = context.measureText( message );
 	
@@ -489,6 +490,7 @@ if (esfera){context.fillStyle   =colors_array_2[index]; /* "rgba(" + backgroundC
 
 	context.lineWidth = borderThickness;
 	//context.moveTo( 128, 44);
+	//roundRect(context, 128/2,44/2, textWidth + borderThickness, fontsize * 1.4 + borderThickness, 6);
 	roundRect(context, 128/2,44/2, textWidth + borderThickness, fontsize * 1.4 + borderThickness, 6);
 	// 1.4 is extra height factor for text below baseline: g,j,p,q.
 	/*
@@ -515,6 +517,8 @@ if (esfera){context.fillStyle   =colors_array_2[index]; /* "rgba(" + backgroundC
 	
 	//context.shadowColor.italics();
 	//context.shadowColor="black";
+	//context.fillText( message, borderThickness, fontsize + borderThickness);
+	//context.textAlign = "rigth";
 	context.fillText( message, 66, 44);
 	//context.moveTo(0, 0);
 	
@@ -525,12 +529,19 @@ if (esfera){context.fillStyle   =colors_array_2[index]; /* "rgba(" + backgroundC
 	var spriteMaterial = new THREE.SpriteMaterial( 
 		{ map: texture } );
 		spriteMaterial.sizeAttenuation = true;
+		spriteMaterial.transparent=true;//   transparent=true;
 		//material.transparent = true;
+		
+		spriteMaterial.opacity= 0.99;
+        spriteMaterial.side= THREE.DoubleSide;
+        spriteMaterial.alphaTest= 0.1;
 		spriteMaterial.map.minFilter = THREE.NearestFilter;
 	  
 	var sprite = new THREE.Sprite( spriteMaterial );
 	//sprite.scale.set(100,50,1);
-	
+	sprite.receiveShadow= true;
+	//sprite.material.transparent=true;
+		sprite.frustumCulled=false;
 	return sprite;	
 }
 
@@ -641,7 +652,7 @@ planet.position.z = Math.sin(60*timestamp );
 bars_z=planet.position.z;
 planet_y=sphere_size;
 bars_x=planet.position.x;
-
+planet.receiveShadow= true;
 planet.position.x = planet.position.x  * orbit;
 planet.position.z = planet.position.z * orbit;
 planet_z=planet.position.z;
@@ -735,7 +746,7 @@ material.roughnessMap = roughnessMap;
 var planet = new THREE.Mesh(geometry, material);
 		 
 		
-		
+		planet.receiveShadow= true;
 		
 		planet.position.y=sphere_size/2;
 		
