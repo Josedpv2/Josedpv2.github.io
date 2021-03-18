@@ -1,12 +1,11 @@
-### DOMEVIDEOPLAYER
- * DOMEVIDEOPLAYER [Demo](). 
+### INFO-SPHERE-DEMO
+ * INFO-SPHERE-DEMO [Demo](). 
 ####  1 - Dependencies
 
 
 * Webpack
-* Babel
 * Three.js
-* GLTF Models Loader
+
 
  ####  2 - Run project
 In the Terminal execute command to resolve dependencies:
