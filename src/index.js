@@ -219,7 +219,7 @@ function main() {
 		var colors=[];
 		colors[1]="red";
 		colors[2]="blue";
-		colors[3]="yellow";
+		colors[3]="blueviolet";
 		colors[4]="green";
 		colors[5]="purple";
 		colors[6]="yellowgreen";
