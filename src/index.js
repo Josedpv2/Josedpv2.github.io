@@ -222,11 +222,11 @@ function main() {
 		colors[3]="blueviolet";
 		colors[4]="green";
 		colors[5]="purple";
-		colors[6]="yellowgreen";
+		colors[6]="goldenrod";
 		colors[7]="orangered";
 		colors[8]="orange";
 		colors[9]="brown";
-		colors[10]="silver";
+		colors[10]="seagreen";
 		colors[11]="turquoise";
 
 	for (let index = 1; index < 12; index++) {
