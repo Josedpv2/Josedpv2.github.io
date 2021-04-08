@@ -148,7 +148,7 @@ function init()
 	//Lights
 	//light = new THREE.AmbientLight( obj.color0 ); // soft white light
 	// hemispherelight
-	hemisLight = new THREE.HemisphereLight( obj.color0, obj.colorg,1);
+	hemisLight = new THREE.HemisphereLight( obj.color0, obj.colorg,2);
 	
 
 	stats = new Stats();
@@ -199,7 +199,7 @@ function addLights()
     spotLight.penumbra = 5;
     spotLight.castShadow = true;
     spotLight.position.set( 0, 0,0 );
-	scene.add( spotLight );
+//	scene.add( spotLight );
 	
 	var light = new THREE.PointLight(0xffffff,3);
 	light.position.set(0,500,0);// pointlight in this position to create te effect on the spheres
@@ -285,12 +285,7 @@ function main() {
 		colors_array_2[index]= colors[index];
 		colors_array_1[index]= colors_array_2[index];
 	}
-	 function solution (){
-	for (let index =999 ; 99<index; index--) {
-		
-		document.write(index);
-	}
-}
+	 
  var mirrorSphereCamera = new THREE.CubeCamera( 0.1, 5000, 512 );
 // mirrorCubeCamera.renderTarget.minFilter = THREE.LinearMipMapLinearFilter;
 scene.add( mirrorSphereCamera );
@@ -364,7 +359,13 @@ function addGUIChooseDate (){
    
 }
 
-
+/****
+ datas duferentes
+ skybox *
+ texturas de esferas https://tympanus.net/Tutorials/WebGLBlobs/index.html   https://tympanus.net/Tutorials/WebGLBlobs/
+ tweenjs*
+ proporciones *
+ */
 //receive object that need to detects colisions in the x, z coordinates
 
 let onKeyDown = function ( event ) {
@@ -697,7 +698,7 @@ function raycast() {
 						info_bars[x][y].visible=false;// turn invisible the currency
 						INTERSECTED.scale.set(1,1, 1);// turn to normal the scale
 						INTERSECTED.remove(INTERSECTED.children[1]);
-						spotLight.position.set(0,0,0);
+						//spotLight.position.set(0,0,0);
 						INTERSECTED.scale.set(1,1,1);
 
 					}
@@ -711,13 +712,14 @@ function raycast() {
 						if(INTERSECTED.name==info_bars[kndex][index].name)
 						{
 
-							spotLight.position.set(INTERSECTED.position);
+							//spotLight.position.set(INTERSECTED.position);
 							INTERSECTED.add(light);
 							//INTERSECTED.scale.set(1.1, 1.1, 1.1);//turn to another the scale
 							INTERSECTED.children[0].visible=false;// turn invisible the name
 							info_bars[kndex][index].visible=true;// turn visible the currency
 							x=kndex;y=index;// saving the coordenates of the matrix
-							tweenHead.start();
+							//tweenHead.start();
+							INTERSECTED.scale.set(1.1,1.1,1.1);
 						}					
 					}		
 				}	
@@ -733,7 +735,7 @@ function raycast() {
 				info_bars[x][y].visible=false;// turn invisible the currency
 				INTERSECTED.scale.set(1,1, 1);// turn to normal the scale
 				INTERSECTED.remove(INTERSECTED.children[1]);
-				spotLight.position.set(0,0,0);
+				//spotLight.position.set(0,0,0);
 				INTERSECTED.scale.set(1,1,1);
 				
 			}
@@ -807,6 +809,7 @@ function exchange_sphere(where_to_start, register_number){
 				regex = $ ;
 				sphere_size= sphere_size.replace(regex, '') ;
 			// setting the size of the sphere	
+			/*
 				for (let indexxx=1 ; indexxx < 12; indexxx++) {
 					
 					sphere_size=sphere_size/10;
@@ -819,8 +822,12 @@ function exchange_sphere(where_to_start, register_number){
 					}
 			
 				}
-			
-				
+			*/
+			sphere_size=sphere_size/5000000;
+			if(sphere_size>250)sphere_size=250;
+
+
+			if(sphere_size<10)sphere_size=10;
 				//create the sphere
 				createwrittensphere( info[index][0], sphere_size,  info[index][ info[0].length-1],colors_array_1[indexx],indexx);
 		
@@ -982,8 +989,9 @@ function addSkybox(num,	isnotfirsttime){//Create animated sky
 		video[0].autoplay= true;	
 		
 		 texture = new THREE.VideoTexture( video[0] );
-	} 
-	
+	} */
+	var texture;
+	texture= new THREE.TextureLoader().load( '../client/js/images/milky-way.jpg' );
 	
 	
 	
@@ -1007,10 +1015,10 @@ function addSkybox(num,	isnotfirsttime){//Create animated sky
 		scene.remove( Skybox );
 	}
 	
-	// Skybox = new THREE.Mesh(skyGeo, materiall);
+	 Skybox = new THREE.Mesh(skyGeo, materiall);
 
 	// put the video both sides of the sphere
-	Skybox.material.side = THREE.DoubleSide;*/
+	Skybox.material.side = THREE.DoubleSide;/*
 	const loader= new THREE.CubeTextureLoader();
 	loader.setPath('../client/js/images/');
 	const materialarray =loader.load(['dawnmountain-zneg.png','dawnmountain-zpos.png','dawnmountain-yneg.png','dawnmountain-ypos.png','dawnmountain-xneg.png','dawnmountain-xpos.png']);
@@ -1032,9 +1040,9 @@ function addSkybox(num,	isnotfirsttime){//Create animated sky
 	
 	var skybox = new THREE.Mesh( skyboxGeom, materialArray );
 	
-	skybox.material.side = THREE.DoubleSide;
+	skybox.material.side = THREE.DoubleSide;*/
 	//add sky
-	scene.add(skybox);
+	scene.add(Skybox);
 }
 function render() 
 {
@@ -1050,66 +1058,3 @@ main();
 animate();
 
 
-var A= [9, 97, 64, 92, 12, 54, 94, 96, 48, 70, 58, 44, 6, 30, 2, 74, 59, 55, 33, 24, 63, 50, 31, 68, 79, 98, 20, 57, 16, 23, 40, 22, 45, 90, 77, 27, 83, 13, 65, 1, 35, 87, 76, 36, 39, 19, 73, 11, 49, 69];
-log();
-function log(){
-	items=A;
-	function swap(items, leftIndex, rightIndex){
-		var temp = items[leftIndex];
-		items[leftIndex] = items[rightIndex];
-		items[rightIndex] = temp;
-	}
-	function partition(items, left, right) {
-		var pivot   = items[Math.floor((right + left) / 2)], //middle element
-			i       = left, //left pointer
-			j       = right; //right pointer
-		while (i <= j) {
-			while (items[i] < pivot) {
-				i++;
-			}
-			while (items[j] > pivot) {
-				j--;
-			}
-			if (i <= j) {
-				swap(items, i, j); //sawpping two elements
-				i++;
-				j--;
-			}
-		}
-		return i;
-	}
-	
-	function quickSort(items, left, right) {
-		var index;
-		if (items.length > 1) {
-			index = partition(items, left, right); //index returned from partition
-			if (left < index - 1) { //more elements on the left side of the pivot
-				quickSort(items, left, index - 1);
-			}
-			if (index < right) { //more elements on the right side of the pivot
-				quickSort(items, index, right);
-			}
-		}
-		return items;
-	}
-	// first call to quick sort
-	var B = quickSort(items, 0, items.length - 1);
-	//console.log(A); //prints [2,3,5,6,7,9]
-	var result= 1;
-    for (let index = 0; index < B.length; index++) {
-		if(B[index]>0){
-			if(B[index]!=B[index+1])	
-			{
-				if(B[index]==result){
-
-					result++;
-				}
-				else{
-					index=B.length;
-				}
-			}
-		}	
-	}
-	
-console.log(result);
-}
