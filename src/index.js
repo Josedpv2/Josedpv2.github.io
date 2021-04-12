@@ -83,7 +83,7 @@ var bars_x;
 var bars_z;
 var orbit=[];
 var colors_array_1=[];
-var info_bars= [[]];
+var info_bars=null;
 var colors_array_2=[];
 var sprite= [];
 var sprite_2= [];
@@ -645,7 +645,7 @@ function createwrittensphere(sphere_price, sphere_size,sphere_cant, colors,index
 //label scale
 		var scale = scaleVector.subVectors(planet.position, camera.position).length() / scaleFactor;
 		sprite_2[index].scale.set(scale, scale, 1);
-		sprite_2[index].position.y= 200;
+		sprite_2[index].position.y= 250;
 		planet.add(sprite_2[index]);
 
 //setting currency label
@@ -883,25 +883,29 @@ function exchange_sphere(where_to_start, register_number){
 			
 				}
 			*/
-			if(sphere_size>500000000)
+			if(sphere_size>1000000000)
 			{
-				sphere_size= 250;
+				sphere_size= 310;
 			}else
 			{ 
 				if(sphere_size<1000000)
 				{
-					sphere_size= 10;
+					sphere_size= 100;
 				}else{
-					var medidor=2000000;
-					for (let indexxx=10 ; indexxx < 250; indexxx++) {
+					var medidor=1000000;
+					var contador=1;
+					for (let indexxx=1 ; indexxx <= 200; indexxx++) {
 					
+						if(indexxx== 50 ){contador++;}
+						if(indexxx== 100 ){contador++;}
+						if(indexxx== 150 ){contador++;}
+						if(indexxx== 200 ){contador++;}
 						
-						
-						if (sphere_size<medidor*indexxx){
-						
-							sphere_size=indexxx;
+						if (sphere_size<medidor*indexxx*contador){
+						var diferenciador= (indexxx*contador)/100;
+							sphere_size=indexxx+100+diferenciador;
 							
-							indexxx=250;
+							indexxx=200;
 						}
 				
 					}
@@ -991,8 +995,23 @@ function Start_Sphere(where_to_start, register_number)
 	  {
 		if( sprite_2!= []){ scene.remove( sprite_2[kndex]);}
 	  }
-	 
-	 
+	  
+	  if(info_bars!=null)
+	  {
+		for (let index = 0; index <  info_bars.length; index++) {
+			
+			for (let i = 0; i < info[0].length-1; i++) {
+
+					info_bars[index][i].visible=false;
+			
+			
+				
+			}
+				
+			
+		}
+	}
+	info_bars=[[]];
 	 planets = [];
 	// video[0].play();
 	// video[0].muted=true;
